@@ -1,0 +1,41 @@
+﻿@model PaymentMethodDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PaymentMethodID)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.PaymentMethodID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PaymentMethodName)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.PaymentMethodName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.IsActive)
+
+
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit" asp-controller="PaymentMethod" asp-action="deletePOST" asp-route-id="@Model.PaymentMethodID">Delete</button> |
+
+        <a class="btn btn-secondary" asp-area="dafault1" asp-controller="PaymentMethod" asp-action="PaymentMethodList">Back to List</a>
+    </form>
+</div>

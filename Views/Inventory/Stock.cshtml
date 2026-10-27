@@ -1,0 +1,117 @@
+﻿@model StockDTO
+@{
+    ViewBag.Title = "Warehouse Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_Notifications" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mb-3">Warehouse Stock : @Model.invName</h4>
+
+                <!-- Add Item -->
+                <form asp-action="AddItemToStockPost" asp-controller="Inventory" method="post" class="row g-2 mb-4">
+                    <input type="hidden" name="InvID" value="@Model.invID" />
+                    <div class="col-md-3">
+                        <select name="ItemID" asp-items="@Model.itemList" class="form-select">
+                            <option value="">-- Select Item --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="UnitID" asp-items="@Model.unitList" class="form-select">
+                            <option value="">-- Unit --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" step="0.01" name="Count" class="form-control" placeholder="Count" />
+                    </div>
+                    <div class="col-md-2">
+                        <input type="number" step="0.01" name="MinThreshold" class="form-control" placeholder="Min" />
+                    </div>
+                    <div class="col-md-1">
+                        <input type="number" step="0.01" name="MaxThreshold" class="form-control" placeholder="Max" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Add Item</button>
+                    </div>
+                </form>
+
+                <!-- Stock Table -->
+                <div class="table-responsive mb-4">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col" style="width: 110px;">Count</th>
+                                <th scope="col" style="width: 100px;">Min</th>
+                                <th scope="col" style="width: 100px;">Max</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" style="width: 90px;"></th>
+                                <th scope="col" style="width: 180px;">Receive PO</th>
+                                <th scope="col" style="width: 300px;">Transfer To Branch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model.stockItems)
+                            {
+                                <tr>
+                                    <td>@s.Item?.ItemName</td>
+                                    <td>@s.Unit?.UnitName</td>
+
+                                    <!-- Edit stock -->
+                                    <form asp-action="UpdateStockPost" asp-controller="Inventory" method="post">
+                                        <input type="hidden" name="InventoryID" value="@s.InventoryID" />
+                                        <input type="hidden" name="InvID" value="@Model.invID" />
+                                    <td><input type="number" step="0.01" name="Count" value="@s.Count" class="form-control form-control-sm" /></td>
+                                    <td><input type="number" step="0.01" name="MinThreshold" value="@s.MinThreshold" class="form-control form-control-sm" /></td>
+                                    <td><input type="number" step="0.01" name="MaxThreshold" value="@s.MaxThreshold" class="form-control form-control-sm" /></td>
+                                    <td>
+                                        @if (s.IsNearToFinish)
+                                        {
+                                            <span class="badge bg-danger">Reorder (PO)</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">OK</span>
+                                        }
+                                    </td>
+                                    <td><button type="submit" class="btn btn-sm btn-primary">Save</button></td>
+                                    </form>
+
+                                    <!-- Receive PO -->
+                                    <td>
+                                        <form asp-action="ReceiveStockPost" asp-controller="Inventory" method="post" class="d-inline-flex">
+                                            <input type="hidden" name="InventoryID" value="@s.InventoryID" />
+                                            <input type="hidden" name="InvID" value="@Model.invID" />
+                                            <input type="number" step="0.01" name="Qty" class="form-control form-control-sm" style="width:80px;" placeholder="Qty" />
+                                            <button type="submit" class="btn btn-sm btn-success ms-1">Receive</button>
+                                        </form>
+                                    </td>
+
+                                    <!-- Transfer to branch -->
+                                    <td>
+                                        <form asp-action="TransferStockPost" asp-controller="Inventory" method="post" class="d-inline-flex">
+                                            <input type="hidden" name="InvID" value="@Model.invID" />
+                                            <input type="hidden" name="ItemID" value="@s.ItemID" />
+                                            <select name="BranchID" asp-items="@Model.branchList" class="form-select form-select-sm" style="width:150px;">
+                                                <option value="">-- Branch --</option>
+                                            </select>
+                                            <input type="number" step="0.01" name="Qty" class="form-control form-control-sm ms-1" style="width:80px;" placeholder="Qty" />
+                                            <button type="submit" class="btn btn-sm btn-warning ms-1">Transfer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+}

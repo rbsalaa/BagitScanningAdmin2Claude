@@ -1,0 +1,64 @@
+﻿@model CatItemDTO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_Notifications" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" style="width: 50px;"></th>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Item Price</th>
+                                <th scope="col">Group Name</th>
+                                <th scope="col" style="width: 150px;">Category Order</th>
+                                <th scope="col" style="width: 200px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.unAssignedItem)
+                            {
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td>
+                                        <img src="~/assets/images/users/avatar-2.jpg" alt="" class="avatar-xs rounded-circle me-2">
+                                        <a href="#" class="text-body">@item.ItemName</a>
+                                    </td>
+                                    <td>@item.ItemPrice</td>
+                                    <td>@item.GroupName</td>
+                                    <td>
+                                        <!-- Visible input for entering the order -->
+                                        <input type="number" name="CategoryOrder_@item.ItemID" class="form-control form-control-sm" placeholder="Order #" />
+                                    </td>
+                                    <td>
+                                        <form asp-action="AssignUserToRoleListPost" asp-controller="Category" method="post" class="d-inline">
+                                            <input type="hidden" name="ItemID" value="@item.ItemID" />
+                                            <input type="hidden" name="CategoryID" value="@Model.categoryID" />
+                                            <input type="hidden" name="CategoryOrder" id="CategoryOrder_@item.ItemID" />
+
+                                            <button type="submit" class="btn btn-link px-2 text-primary"
+                                                    onclick="document.getElementById('CategoryOrder_@item.ItemID').value =
+                                                                 document.querySelector('[name=CategoryOrder_@item.ItemID]').value;">
+                                                Click to Assign
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+}

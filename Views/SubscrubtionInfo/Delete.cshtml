@@ -1,0 +1,57 @@
+﻿@model SubscrubtionInfoDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubscriptionTitle)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.SubscriptionTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SubscriptionDescription)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.SubscriptionDescription)
+        </dd>
+      
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BrandName)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.BrandName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.KiosikCount)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.KiosikCount)
+       
+
+
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit"  asp-controller="SubscrubtionInfo" asp-action="deletePOST" asp-route-id="@Model.SupscrubtionID">Delete</button> |
+
+        <a class="btn btn-secondary" asp-area="dafault1" asp-controller="SubscrubtionInfo" asp-action="SubscrubtionInfoList">Back to List</a>
+    </form>
+</div>

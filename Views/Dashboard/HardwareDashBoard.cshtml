@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SelfKOrderWeb.Models.KiosikHardwareLog>
+
+<h2>Kiosk Hardware Logs</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Kiosk ID</th>
+            <th>Kiosk Name</th>
+            <th>ID</th>
+            <th>Hardware Name</th>
+            <th>Last Update Date</th>
+           
+            <th>Hardware Code</th>
+            <th>Status</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var log in Model)
+            {
+                <tr>
+                    <td>@log.KiosikID</td>
+                    <td>@log.KiosikName</td>
+                    <td>@log.KiosikHardwareID</td>
+                    <td>@log.HardWareName</td>
+                    <td>@(log.LastUpateDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
+                  
+                    <td>@log.HardWareCode</td>
+                    <td>
+                        @if (log.Stauts)
+                        {
+                            <span class="text-success">Online</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Offline</span>
+                        }
+                    </td>
+                   
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7" class="text-center text-muted">No hardware logs found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

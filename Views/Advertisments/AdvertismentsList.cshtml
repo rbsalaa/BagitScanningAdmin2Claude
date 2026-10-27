@@ -1,0 +1,86 @@
+﻿@model IEnumerable<AdvertismentsDTO>
+@{
+    ViewData["Title"] = "Advertismentss List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Advertismentss List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="Advertisments" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add Advertisments</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+              
+                <th>
+                    Advertisments ID
+                </th>
+                <th>
+                    Advertisments Title 
+                </th>
+                <th>
+                    Is Active
+                </th>
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+                        @item.AdsID
+
+                    </td>
+                    <td >
+                        @item.AdsTitle
+
+                    </td>
+                  
+                    <td>
+                        @item.IsActive
+
+                    </td>
+
+                    
+                    <td class="text-center">
+                        <div class="btn-group w-75" role="Advertisments">
+                            <a class="btn btn-primary mx-2"  asp-controller="Advertisments" asp-action="Detail" asp-route-id="@item.AdsID"><i class="bi bi-card-list"></i> &nbsp; Advertisments Details</a>
+
+                            <a class="btn btn-secondary  mx-2 " asp-controller="Advertisments" asp-action="Edit" asp-route-id="@item.AdsID"><i class="bi bi-pencil-fill"></i> &nbsp; Edit</a>
+
+                            <a class="btn btn-warning  mx-2 " asp-controller="Advertisments" asp-action="Delete" asp-route-id="@item.AdsID"><i class="bi bi-trash-fill"></i> &nbsp; Delete</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+}

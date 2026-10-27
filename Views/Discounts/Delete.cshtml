@@ -1,0 +1,60 @@
+﻿@model DiscountsDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiscountID)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.DiscountID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiscountCode)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.DiscountCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiscountTitle)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.DiscountTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiscountStartDate)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.DiscountStartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DiscountEndDate)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.DiscountEndDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit" asp-controller="Discounts" asp-action="deletePOST" asp-route-id="@Model.DiscountID">Delete</button> |
+
+        <a class="btn btn-secondary" asp-area="dafault1" asp-controller="Discounts" asp-action="DiscountsList">Back to List</a>
+    </form>
+</div>

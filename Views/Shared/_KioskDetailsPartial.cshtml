@@ -1,0 +1,54 @@
+﻿<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>@Model.KiosikName Dashboard</h4>
+    </div>
+    <div class="card-body">
+        <!-- Stats -->
+        <div class="row text-center">
+            <div class="col"><h5>@Model.TotalOrders</h5><p>Total Orders</p></div>
+            <div class="col"><h5>@Model.CompletedOrders</h5><p>Completed</p></div>
+            <div class="col"><h5>@Model.CancelledOrders</h5><p>Cancelled</p></div>
+        </div>
+
+        <hr />
+        <h5>Top 5 Sold Items</h5>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr><th>Item</th><th>Quantity Sold</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TopSoldItems)
+                {
+                    <tr>
+                        <td>@item.ItemName</td>
+                        <td>@item.QuantitySold</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- Chart container -->
+        <div id="chartsWrapper" style="min-height:320px;">
+            <canvas id="monthlyChart" style="width:100%; height:300px;"></canvas>
+            <canvas id="yearlyChart" style="width:100%; height:300px;" class="mt-4"></canvas>
+        </div>
+        <!-- Store model data as JSON in hidden inputs so JS can read it -->
+        <input type="hidden" id="OrdersPerMonthJson" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OrdersPerMonth))' />
+        <input type="hidden" id="OrdersPerYearJson" value='@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.OrdersPerYear))' />
+        <hr />
+        <h5>Recent Orders</h5>
+        <table class="table table-sm table-striped">
+            <thead><tr><th>ID</th><th>Date</th><th>Status</th><th>Total</th></tr></thead>
+            <tbody>
+                @foreach (var order in Model.RecentOrders)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                        <td>@order.Status</td>
+                        <td>@order.TotalAmount.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

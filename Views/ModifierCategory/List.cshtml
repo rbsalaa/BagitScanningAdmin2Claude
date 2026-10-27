@@ -1,0 +1,109 @@
+﻿@model IEnumerable<ModifierCategoryDTO>
+@{
+    ViewData["Title"] = "Modifier List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Modifier List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="ModifierCategory" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add Modifier</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="ModTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+              
+                <th>
+                    Modifier ID
+                </th>
+                <th>
+                    Modifier Name
+                </th>
+                <th>
+                    Modifier ar
+                </th>
+                <th scope="col"> Modifier  imag</th>
+               
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+                        @item.ModifierCategoryID
+
+                    </td>
+                    <td >
+                        @item.ModifierCategoryName
+
+                    </td>
+                    <td >
+                        @item.ModifierCategoryName_AR
+
+                    </td>
+
+                    <td>
+                       asdasd
+
+                    </td>
+
+
+                    <td class="text-center">
+                        <div class="btn-group w-75" role="Items">
+                            <a class="btn btn-primary mx-2" asp-controller="ModifierCategory" asp-action="Detail" asp-route-id="@item.ModifierCategoryID"><i class="bi bi-card-list"></i> &nbsp; Modifier Details</a>
+
+                            <a class="btn btn-secondary  mx-2 " asp-controller="ModifierCategory" asp-action="Edit" asp-route-id="@item.ModifierCategoryID"><i class="bi bi-pencil-fill"></i> &nbsp; Edit</a>
+
+                            <a class="btn btn-warning  mx-2 " asp-controller="ModifierCategory" asp-action="Delete" asp-route-id="@item.ModifierCategoryID"><i class="bi bi-trash-fill"></i> &nbsp; Delete</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#ModTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [5, 10, 25, 50],
+                "ordering": true,
+                "searching": true,
+                "language": {
+                    "search": "Filter items:",
+                    "lengthMenu": "Show _MENU_ entries per page"
+                }
+            });
+        });
+    </script>
+}

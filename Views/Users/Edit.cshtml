@@ -1,0 +1,180 @@
+﻿@model AddUserDTO
+
+<form asp-action="EditPost">
+
+                <!-- end modalheader -->
+                <div class="modal-body p-4">
+                    <div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <input hidden asp-for="@Model.Id" class="form-control" />
+                                <label asp-for="@Model.FirstName" class="control-label">First Name</label>
+                                <input asp-for="@Model.FirstName" class="form-control" />
+                                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label asp-for="@Model.LastName" class="control-label">Last Name</label>
+                                <input asp-for="@Model.LastName" class="form-control" />
+                                <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label asp-for="@Model.Email" class="control-label">Email</label>
+                                <input asp-for="@Model.Email" class="form-control" />
+                                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items="Model.CompList"><option value="">Select Company</option></select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control PreferenceType2" asp-items="Model.BrandList"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BranchID" class="control-label"></label>
+                <select asp-for="BranchID" class="form-control PreferenceType3" asp-items="Model.BranchList"></select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FranchID" class="control-label"></label>
+                <select asp-for="FranchID" class="form-control PreferenceType4" asp-items=Model.FranchList>
+                  
+                </select>
+                <span asp-validation-for="FranchID" class="text-danger"></span>
+            </div>
+            @{
+                if (Model.IsRBSUser == true)
+                {
+                    <div class="form-group pb-3">
+                        <label asp-for="IsRBSUser" class="control-label"></label>
+                        <input  id="IsRBSUserCheckbox" type="checkbox" asp-for="@Model.IsRBSUser" />
+                        <span asp-validation-for="@Model.IsRBSUser" class="text-danger"></span>
+                    </div>
+                }
+            }
+            
+            <div class="form-group pb-3">
+                <label asp-for="IsSuperMainAdmin" class="control-label"></label>
+                <input type="checkbox" asp-for="@Model.IsSuperMainAdmin" />
+                <span asp-validation-for="@Model.IsSuperMainAdmin" class="text-danger"></span>
+            </div>
+                       
+                    </div>
+                </div>
+                <!-- end modalbody -->
+                <div class="">
+                   
+                    <button type="submit" class="btn btn-primary w-sm">Edit</button>|
+        <a class="btn btn-secondary" asp-action="List">Back to List</a>
+                </div>
+                <!-- end modalfooter -->
+   
+</form>
+<style>
+    select:disabled {
+        background-color: #f0f0f0 !important;
+        color: #999 !important;
+        cursor: not-allowed;
+    }
+</style>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @if (TempData["error"] != null)
+    {
+        <script type="text/javascript">
+            toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["error"]?.ToString())));
+        </script>
+    }
+    <script type="text/javascript">
+     
+            function toggleDropdownsBasedOnRBS(isChecked) {
+                const dropdowns = ["#PreferenceType", ".PreferenceType2", ".PreferenceType3", ".PreferenceType4"];
+
+                dropdowns.forEach(function (selector) {
+                    $(selector).prop('disabled', isChecked);
+
+                    if (isChecked) {
+                        $(selector).val(""); // Reset the value
+                    }
+                });
+            }
+        //Dropdownlist Selectedchange event
+        $(document).ready(function () {
+            toggleDropdownsBasedOnRBS($("#IsRBSUserCheckbox").is(":checked"));
+
+            // Handle checkbox change
+            $("#IsRBSUserCheckbox").change(function () {
+                const isChecked = $(this).is(":checked");
+                toggleDropdownsBasedOnRBS(isChecked);
+            });
+            $("#PreferenceType").change(function () {
+                $(".PreferenceType2").empty();
+                $(".PreferenceType3").empty();
+                $(".PreferenceType4").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Users/GetPreferenceValues',
+                    dataType: 'json',
+                    data: { id2: $(this).val() },
+                    success: function (data) {
+                        $(".PreferenceType2").append('<option value="">Select Brand</option>');
+                        $.each(data, function (i, item) {
+                            $(".PreferenceType2").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                        });
+                    }
+                });
+            });
+            $(".PreferenceType2").change(function () {
+                $(".PreferenceType3").empty();
+                $(".PreferenceType4").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Users/GetPreferenceValues3',
+                    dataType: 'json',
+                    data: {
+                        id2: $(".PreferenceType2").val(),
+                        id3: $("#PreferenceType").val()
+                    },
+                    success: function (data) {
+                        $(".PreferenceType3").append('<option value="">Select Branch</option>');
+                        $.each(data, function (i, item) {
+                            $(".PreferenceType3").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                        });
+                    }
+                });
+            });
+      
+        $(".PreferenceType3").change(function () {
+            $(".PreferenceType4").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/Users/GetPreferenceValues2',
+                dataType: 'json',
+                data: {
+                    id2: $(".PreferenceType2").val(),
+                    id3: $("#PreferenceType").val(),
+                   
+                },
+                success: function (data) {
+                    $(".PreferenceType4").append('<option value="">Select Franch</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType4").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+                });
+
+    </script>
+}

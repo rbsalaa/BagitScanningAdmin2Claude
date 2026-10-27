@@ -1,0 +1,76 @@
+﻿@model IEnumerable<GroupDTO>
+@{
+    ViewData["Title"] = "Category List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Category List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="category" asp-action="Rolecreate"><i class="bi bi-plus-circle"></i> &nbsp; Add Category</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+
+
+                <th>
+                    Category Name
+                </th>
+
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.GroupName
+
+                    </td>
+
+
+
+                    <td class="text-center">
+                        <div class="btn-Roles w-75" role="Roles">
+                            <a class="btn btn-primary mx-2" asp-controller="group" asp-action="AssignItemToCategory" asp-route-id="@item.GroupID"><i class="bi bi-card-list"></i> &nbsp;  Assign Items To Category</a>
+
+                            <a class="btn  btn-primary mx-2" asp-controller="group" asp-action="UnassignItemToCategory" asp-route-id="@item.GroupID"><i class="bi bi-card-list"></i> &nbsp;  Category Current items Details</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}

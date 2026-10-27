@@ -1,0 +1,79 @@
+﻿@model IEnumerable<KiosikDTO>
+@{
+    ViewData["Title"] = "Kiosik List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Kiosik List</h3>
+        </div>
+       
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+
+
+                <th>
+                    Kiosik Name
+                </th>
+                <th>
+                    Kiosik Locaction
+                </th>
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.KiosikName
+
+                    </td>
+                    <td>
+                        @item.CompName /  @item.BrandName / @item.BranchName
+
+                    </td>
+                 
+
+
+                    <td class="text-center">
+                        <div class="btn-Roles w-100" role="Roles">
+                                <a class="btn btn-primary mx-2 pb-3" asp-controller="Advertisments" asp-action="AssignAdsKiosikList" asp-route-id="@item.KiosikID"><i class="bi bi-card-list"></i> &nbsp;  Assign Ads To Kiosik</a>
+
+                            <a class="btn  btn-primary mx-2 pb-3" asp-controller="Advertisments" asp-action="KiosikCurrentAdsList" asp-route-id="@item.KiosikID"><i class="bi bi-card-list"></i> &nbsp;  Kiosik Current Ads </a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}

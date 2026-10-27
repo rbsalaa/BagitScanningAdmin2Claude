@@ -1,0 +1,180 @@
+﻿@model BannersDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Banners</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPost" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BannerID" />
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items="Model.CompList"></select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control PreferenceType2" asp-items="Model.BrandList"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BranchID" class="control-label"></label>
+                <select asp-for="BranchID" class="form-control PreferenceType3" asp-items="Model.BranchList"></select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BannerTitle" class="control-label"></label>
+                <input asp-for="BannerTitle" class="form-control" />
+                <span asp-validation-for="BannerTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TargetType" class="control-label"></label>
+                <select asp-for="TargetType" class="form-control" id="TargetType">
+                    <option value="">-- Select Target Type --</option>
+                    <option value="Item">Item</option>
+                    <option value="Category">Category</option>
+                </select>
+                <span asp-validation-for="TargetType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TargetID" class="control-label"></label>
+                <select asp-for="TargetID" class="form-control" id="TargetID">
+                    <option value="">-- Select Target --</option>
+                </select>
+                <span asp-validation-for="TargetID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TargetUrl" class="control-label"></label>
+                <input asp-for="TargetUrl" class="form-control" />
+                <span asp-validation-for="TargetUrl" class="text-danger"></span>
+            </div>
+            <!-- Hidden BannerURL field -->
+            <input hidden asp-for="BannerURL" id="BannerURL" class="form-control" value="@Model.BannerURL" />
+
+            <!-- File Upload -->
+            <div class="form-group pb-3">
+                <div class="custom-file">
+                    <input asp-for="@Model.FileAds" type="file" class="custom-file-input fileUpload" accept="image/jpeg" />
+                </div>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="BannerStartDate" class="control-label"></label>
+                <input asp-for="BannerStartDate" class="form-control" />
+                <span asp-validation-for="BannerStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="BannerEndDate" class="control-label"></label>
+                <input asp-for="BannerEndDate" class="form-control" />
+                <span asp-validation-for="BannerEndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="IsActive" class="control-label"></label>
+                <input asp-for="IsActive" class="form-checkbox" />
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary" asp-controller="Banners" asp-action="EditPost" />
+                | <a class="btn btn-secondary" asp-action="BannersList">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+
+   
+
+    // function onChange() {
+    //     var fileInput = document.getElementById('FileAds');
+    //     if (fileInput.files.length > 0) {
+    //         var file = fileInput.files[0];
+    //         var url = URL.createObjectURL(file);
+
+    //         // Update the hidden BannerURL field with the new file URL
+    //         BannerUrlInput.value = url;  // Set the URL in the hidden field
+
+    //         // Update the video preview
+    //         video.src = url;
+    //         video.load();
+    //         video.onloadeddata = function () {
+    //             video.play();
+    //         }
+    //     }
+    // }
+
+           $(document).ready(function () {
+                $('#TargetType').change(function () {
+                    var type = $(this).val();
+                    var targetSelect = $('#TargetID');
+                    targetSelect.empty(); // clear previous options
+                    targetSelect.append('<option value="">-- Select Target --</option>');
+
+                    if (type) {
+                        $.get('/Banners/GetTargetsByType', { type: type }, function (data) {
+                            $.each(data, function (i, item) {
+                                targetSelect.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                            });
+                        });
+                    }
+                });
+             });
+
+    $(document).ready(function () {
+
+        $("#PreferenceType").change(function () {
+            $(".PreferenceType2").empty();
+            $(".PreferenceType3").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/TAXGroup/GetPreferenceValues',
+                dataType: 'json',
+                data: { id2: $(this).val() },
+                success: function (data) {
+                    $(".PreferenceType2").append('<option value="">Select Brand</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType2").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+
+        $(".PreferenceType2").change(function () {
+            $(".PreferenceType3").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/TAXGroup/GetPreferenceValues3',
+                dataType: 'json',
+                data: {
+                    id2: $(".PreferenceType2").val(),
+                    id3: $("#PreferenceType").val()
+                },
+                success: function (data) {
+                    $(".PreferenceType3").append('<option value="">Select Branch</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType3").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>

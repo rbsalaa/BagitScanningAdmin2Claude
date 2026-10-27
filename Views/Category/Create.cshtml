@@ -1,0 +1,138 @@
+﻿@model CategoryDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h1>Create</h1>
+
+<h4>Category</h4>
+<hr />
+<div class="row">
+    <partial name="_Notifications" />
+    <div class="col-md-4">
+         @* <form asp-action="createPost"> *@
+            <form asp-action="createPost" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <select id="PreferenceType" asp-for="CompID" class="form-control">
+                <option value="">-- Select Company --</option>
+                @foreach (var item in Model.CompList)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+
+            <select asp-for="BrandID" class="form-control PreferenceType2" disabled>
+                <option value="">-- Select Brand --</option>
+            </select>
+
+            <select asp-for="BranchID" class="form-control PreferenceType3" disabled>
+                <option value="">-- Select Branch --</option>
+            </select>
+            <div class="form-group">
+                <label asp-for="CategoryName" class="control-label"></label>
+                <input asp-for="CategoryName" class="form-control" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div> <div class="form-group">
+                <label asp-for="CategoryName_AR" class="control-label"></label>
+                <input asp-for="CategoryName_AR" class="form-control" />
+                <span asp-validation-for="CategoryName_AR" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="CategoryOrder" class="control-label"></label>
+                <input asp-for="CategoryOrder" class="form-control" />
+                <span asp-validation-for="CategoryOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <input asp-for="IsSuggestionCat" class="form-check-input" />
+                <label asp-for="IsSuggestionCat" class="form-check-label"></label>
+                <span asp-validation-for="IsSuggestionCat" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pb-3">
+
+                <div class="custom-file">
+                    <input asp-for="@Model.File" type="file" class="custom-file-input fileUpload" accept="image/jpeg" />
+                </div>
+            </div>
+          
+           
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary"  asp-controller="Category" asp-action="createPost" />
+             
+                | <a class="btn btn-secondary" asp-action="List">Back to List</a>
+            </div>
+          
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        // When Company is changed
+        $("#PreferenceType").change(function () {
+            var companyId = $(this).val();
+            $(".PreferenceType2").empty().prop('disabled', true);
+            $(".PreferenceType3").empty().prop('disabled', true);
+
+            if (companyId) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/PaymentMethod/GetPreferenceValues',
+                    dataType: 'json',
+                    data: { id2: companyId },
+                    success: function (brands) {
+                        $(".PreferenceType2").append('<option value="">-- Select Brand --</option>');
+                        $.each(brands, function (i, brand) {
+                            $(".PreferenceType2").append('<option value="' + brand.Value + '">' + brand.Text + '</option>');
+                        });
+                        $(".PreferenceType2").prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Failed to retrieve brands.');
+                    }
+                });
+            }
+        });
+
+        // When Brand is changed
+        $(".PreferenceType2").change(function () {
+            var companyId = $("#PreferenceType").val();
+            var brandId = $(this).val();
+            $(".PreferenceType3").empty().prop('disabled', true);
+
+            if (companyId && brandId) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/PaymentMethod/GetPreferenceValues3',
+                    dataType: 'json',
+                    data: { id3: companyId, id2: brandId },
+                    success: function (branches) {
+                        $(".PreferenceType3").append('<option value="">-- Select Branch --</option>');
+                        $.each(branches, function (i, branch) {
+                            $(".PreferenceType3").append('<option value="' + branch.Value + '">' + branch.Text + '</option>');
+                        });
+                        $(".PreferenceType3").prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Failed to retrieve branches.');
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+
+
+@section scripts {
+
+
+   
+
+
+}

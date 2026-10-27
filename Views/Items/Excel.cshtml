@@ -1,0 +1,44 @@
+﻿@model ItemDTO
+
+@{
+    ViewData["Title"] = "Excel";
+}
+
+
+
+<h1>Create</h1>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <partial name="_Notifications" />
+    <div class="col-md-4">
+        @* <form asp-action="createPost" method="post"  enctype=" multipart /form-data"> *@
+        <form asp-action="excelPost" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group pb-3">
+
+                <div class="custom-file">
+                    <input asp-for="@Model.File" type="file" class="custom-file-input fileUpload" accept=".xls,.xlsx" />
+                </div>
+            </div>
+           
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary"  asp-controller="Items" asp-action="excelPost" />
+             
+                | <a class="btn btn-secondary" asp-action="ItemList">Back to List</a>
+            </div>
+          
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

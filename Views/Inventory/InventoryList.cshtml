@@ -1,0 +1,73 @@
+﻿@model IEnumerable<SelfKOrderWeb.DTO.InventoryDTO>
+@{
+    ViewData["Title"] = "Inventory List";
+}
+
+<div class="container-fluid pt-4">
+    <div class="row align-items-center mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Inventory List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Inventory" asp-action="create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Create New Inventory
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Inventory Name</th>
+                <th>الاسم بالعربية</th>
+                <th>Location</th>
+                <th>Active</th>
+                <th>Last Modified</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>@obj.InvID</td>
+                    <td>@obj.InvName</td>
+                    <td>@obj.InvName_AR</td>
+                    <td>@obj.InvLocation</td>
+                    <td>
+                        @if (obj.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </td>
+                    <td>@obj.LastModified.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="text-end">
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Inventory" asp-action="Stock" asp-route-id="@obj.InvID" class="btn btn-warning btn-sm">
+                                <i class="bi bi-diagram-3"></i> Stock
+                            </a>
+                            <a asp-controller="Inventory" asp-action="AssignBranchToInventory" asp-route-id="@obj.InvID" class="btn btn-warning btn-sm">
+                                <i class="bi bi-diagram-3"></i> Branches
+                            </a>
+                            <a asp-controller="Inventory" asp-action="Detail" asp-route-id="@obj.InvID" class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i> Detail
+                            </a>
+                            <a asp-controller="Inventory" asp-action="edit" asp-route-id="@obj.InvID" class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-controller="Inventory" asp-action="delete" asp-route-id="@obj.InvID" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

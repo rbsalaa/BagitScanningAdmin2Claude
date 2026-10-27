@@ -1,0 +1,118 @@
+﻿@model ItemDTO
+
+@{
+    ViewData["Title"] = "Item Details";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary fw-bold">@Model.ItemName Details</h3>
+        <a class="btn btn-secondary" asp-action="ItemList">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    <!-- Item Details Card -->
+    <div class="card shadow-sm rounded-3 mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">ID</h6>
+                    <p class="fw-semibold">@Model.ItemID</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Aloha Product ID</h6>
+                    <p class="fw-semibold">@Model.AlohaProductID ?? "-"</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Price</h6>
+                    <p class="fw-semibold text-success">@Model.ItemPrice.ToString("N2") ﷼</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Calories</h6>
+                    <p class="fw-semibold">@Model.Calories ?? "-"</p>
+                </div>
+
+                <div class="col-12">
+                    <h6 class="text-muted mb-1">Name</h6>
+                    <p class="fw-semibold">@Model.ItemName</p>
+                </div>
+
+                <div class="col-12">
+                    <h6 class="text-muted mb-1">Description</h6>
+                    <p class="text-muted">@Model.ItemDescription ?? "-"</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Steps</h6>
+                    <p class="fw-semibold">@Model.Steps ?? "-"</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Allergies</h6>
+                    <p class="fw-semibold">@Model.Alergies ?? "-"</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Group Name</h6>
+                    <p class="fw-semibold">@Model.GroupName ?? "-"</p>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="text-muted mb-1">Is Active</h6>
+                    <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+                        @(Model.IsActive ? "Yes" : "No")
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modifier Categories Section -->
+    @if (Model.ModifierCategories?.Any() == true)
+    {
+        <h4 class="mt-4 text-success">Modifier Categories</h4>
+        <div class="accordion" id="modifierAccordion">
+            @for (int i = 0; i < Model.ModifierCategories.Count; i++)
+            {
+                var cat = Model.ModifierCategories[i];
+                var modifierCount = cat.Modifiers?.Count ?? 0;
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-@i">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse-@i" aria-expanded="true" aria-controls="collapse-@i">
+                            @cat.ModifierCategoryName (@modifierCount)
+                        </button>
+                    </h2>
+                    <div id="collapse-@i" class="accordion-collapse collapse show" data-bs-parent="#modifierAccordion">
+                        <div class="accordion-body">
+                            @if (cat.Modifiers?.Any() == true)
+                            {
+                                <ul class="list-group">
+                                    @foreach (var mod in cat.Modifiers)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Aloha ID:   @mod.ModifierID - @mod.ModifierName
+                                       
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p class="text-muted">No modifiers found in this category.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted mt-3">No modifier categories available for this item.</p>
+    }
+</div>

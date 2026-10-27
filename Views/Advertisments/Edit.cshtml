@@ -1,0 +1,140 @@
+﻿@model AdvertismentsDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Advertisments</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPost" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AdsID" />
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items="Model.CompList"></select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control PreferenceType2" asp-items="Model.BrandList"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BranchID" class="control-label"></label>
+                <select asp-for="BranchID" class="form-control PreferenceType3" asp-items="Model.BranchList"></select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdsTitle" class="control-label"></label>
+                <input asp-for="AdsTitle" class="form-control" />
+                <span asp-validation-for="AdsTitle" class="text-danger"></span>
+            </div>
+            <video id="videoPreview" width="200" controls>
+                <source src="@Url.Content("~/"+Model.AdsURL)" />
+                Your browser does not support the video tag.
+            </video>
+
+            <!-- Hidden AdsURL field -->
+            <input hidden asp-for="AdsURL" id="AdsURL" class="form-control" value="@Model.AdsURL" />
+
+            <!-- File Upload -->
+            <div class="form-group">
+                <div class="custom-file">
+                    <input asp-for="FileAds" id="FileAds" type="file" class="custom-file-input fileUpload" onchange="onChange()" accept="video/*">
+                </div>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="AdsStartDate" class="control-label"></label>
+                <input asp-for="AdsStartDate" class="form-control" />
+                <span asp-validation-for="AdsStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="AdsEndDate" class="control-label"></label>
+                <input asp-for="AdsEndDate" class="form-control" />
+                <span asp-validation-for="AdsEndDate" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary" asp-controller="Advertisments" asp-action="EditPost" />
+                | <a class="btn btn-secondary" asp-action="AdvertismentsList">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+
+    var URL = window.URL || window.webkitURL;
+    var video = document.getElementById('videoPreview');
+    var adsUrlInput = document.getElementById('AdsURL'); // Hidden AdsURL field
+
+    function onChange() {
+        var fileInput = document.getElementById('FileAds');
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var url = URL.createObjectURL(file);
+
+            // Update the hidden AdsURL field with the new file URL
+            adsUrlInput.value = url;  // Set the URL in the hidden field
+
+            // Update the video preview
+            video.src = url;
+            video.load();
+            video.onloadeddata = function () {
+                video.play();
+            }
+        }
+    }
+
+    $(document).ready(function () {
+
+        $("#PreferenceType").change(function () {
+            $(".PreferenceType2").empty();
+            $(".PreferenceType3").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/TAXGroup/GetPreferenceValues',
+                dataType: 'json',
+                data: { id2: $(this).val() },
+                success: function (data) {
+                    $(".PreferenceType2").append('<option value="">Select Brand</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType2").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+
+        $(".PreferenceType2").change(function () {
+            $(".PreferenceType3").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/TAXGroup/GetPreferenceValues3',
+                dataType: 'json',
+                data: {
+                    id2: $(".PreferenceType2").val(),
+                    id3: $("#PreferenceType").val()
+                },
+                success: function (data) {
+                    $(".PreferenceType3").append('<option value="">Select Branch</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType3").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>

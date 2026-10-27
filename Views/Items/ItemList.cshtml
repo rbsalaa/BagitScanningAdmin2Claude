@@ -1,0 +1,136 @@
+﻿<div class="container py-4">
+    <partial name="_Notifications" />
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary fw-bold">Items List</h3>
+        <div>
+            <a class="btn btn-success me-2" asp-controller="Items" asp-action="create">
+                <i class="bi bi-plus-circle"></i> Add Item
+            </a>
+        </div>
+    </div>
+
+    <!-- Scrollable Table Container -->
+    <div class="table-responsive shadow-sm rounded" >
+        <table id="itemsTable" class="table table-hover align-middle mb-0">
+            <thead class="table-light position-sticky top-0" style="z-index: 1;">
+                <tr>
+                    <th>Item ID</th>
+                    <th>Price</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th class="text-center" style="width: 180px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ItemID</td>
+                        <td class="fw-semibold text-success">﷼ @item.ItemPrice.ToString("N2")</td>
+                        <td>@item.ItemName</td>
+                        <td class="text-wrap" style="max-width: 250px;">@item.ItemDescription</td>
+                        <td>
+                            <img src="@item.ItemPic" alt="@item.ItemName" class="img-thumbnail"
+                                 style="width: 100px; height: 100px; object-fit: cover;">
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a asp-action="Detail" asp-controller="Items" asp-route-id="@item.ItemID"
+                                   class="btn btn-sm btn-info" title="View Details">
+                                    <i class="ri-eye-line"></i>
+                                </a>
+                                <a asp-action="Edit" asp-controller="Items" asp-route-id="@item.ItemID"
+                                   class="btn btn-sm btn-primary" title="Edit Item">
+                                    <i class="ri-pencil-line"></i>
+                                </a>
+                                <a asp-action="Delete" asp-controller="Items" asp-route-id="@item.ItemID"
+                                   class="btn btn-sm btn-danger" title="Delete Item">
+                                    <i class="ri-delete-bin-line"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f1f7ff;
+            transition: 0.3s;
+        }
+
+        .btn-group .btn {
+            transition: transform 0.2s;
+        }
+
+            .btn-group .btn:hover {
+                transform: scale(1.1);
+            }
+
+        .table img {
+            border-radius: 8px;
+        }
+
+        h3 {
+            letter-spacing: 0.5px;
+        }
+
+        /* Scrollbar styling */
+        .table-responsive::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+            .table-responsive::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .table-responsive
+
+        {
+            font-size: 0.9rem;
+        }
+
+        td img {
+            width: 80px;
+            height: 80px;
+        }
+
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#itemsTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [5, 10, 25, 50],
+                "ordering": true,
+                "searching": true,
+                "language": {
+                    "search": "Filter items:",
+                    "lengthMenu": "Show _MENU_ entries per page"
+                }
+            });
+        });
+    </script>
+}

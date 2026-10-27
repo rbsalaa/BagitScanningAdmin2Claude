@@ -1,0 +1,133 @@
+﻿@model CustomerDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+<style>
+    .sub{
+        color: green;
+    }
+</style>
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CustomerName)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.CustomerName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CustomerLocation)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.CustomerLocation)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CustomerMail)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.CustomerPhone)
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IsSupscriped)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.IsSupscriped)
+                </dd>
+                    @if (Model.IsSupscriped == false)
+                    {
+                    <h2 style="color:orangered">
+                        
+                        No Active Supscrubtion Found
+
+                    </h2>
+                   
+                    }
+                    else
+                    {
+                  @*  <h3 class="text-primary"> Subscription  Details</h3>
+                    <dt class="col-sm-2 sub">
+                            @Html.DisplayNameFor(model => model.SupscrubtionTitle)
+                    </dt>
+
+                    <dd class="col-sm-20 sub">
+                            @Html.DisplayFor(model => model.SupscrubtionTitle)
+                    </dd>
+                    <dt class="col-sm-2 sub">
+                            @Html.DisplayNameFor(model => model.SupscrubtionDescription)
+                    </dt>
+
+                    <dd class="col-sm-20 sub">
+                            @Html.DisplayFor(model => model.SupscrubtionDescription)
+                    </dd>
+                    <dt class="col-sm-2 sub">
+                            @Html.DisplayNameFor(model => model.SupscrubtionStartDate)
+                    </dt>
+
+                    <dd class="col-sm-20 sub">
+                            @Html.DisplayFor(model => model.SupscrubtionStartDate)
+                    </dd>
+                    <dt class="col-sm-2 sub">
+                            @Html.DisplayNameFor(model => model.SupscrubtionEndDate)
+                    </dt>
+                    <dd class="col-sm-20 sub">
+                            @Html.DisplayFor(model => model.SupscrubtionEndDate)
+                    </dd>
+                    <dt class="col-sm-2 sub">
+                            @Html.DisplayNameFor(model => model.SubKiosikCount)
+                    </dt>
+                    <dd class="col-sm-20 sub">
+                            @Html.DisplayFor(model => model.SubKiosikCount)
+                       
+                    </dd>*@
+                    <dd class="col-sm-20 sub">
+                         <a class="btn btn-primary mx-2" asp-controller="SubscrubtionInfo" asp-action="Detail" asp-route-id="@Model.SupscrubtionID"><i class="bi bi-card-list"></i>Supscrubtion Details</a>
+                     
+                    </dd>
+
+                    }
+                  
+
+
+            </dl>
+        </div>
+
+
+        <div class="col-6">
+            <h3 class="text-primary">Assigned Kiosiks Details</h3>
+            <dl class="row">
+                @foreach(var item in Model.KiossiksList)
+                {
+                     <div class="col">
+                       <div class="card" style="width: 18rem;">
+                   
+                        <div class="card-body">
+                            <h5 class="card-title">@item.KiosikID</h5>
+                            <p class="card-text">@item.KiosikName</p>
+                            <a class="btn btn-primary mx-2" asp-controller="Kiosik" asp-action="Detail" asp-route-KiosikID="@item.KiosikID" asp-route-StrId="@item.BranchID" asp-route-CompId="@item.CompID" asp-route-BrndId="@item.BrandID"><i class="bi bi-card-list"></i> &nbsp; Kiosik Details</a>
+
+                        </div>
+                       </div>
+                    </div>
+                  
+                    
+                }
+
+                   
+                    
+
+
+
+            </dl>
+        </div>
+
+
+        </br>
+
+    </div>
+    <a class="btn btn-secondary" asp-action="CustomerList">Back to List</a>
+</div>

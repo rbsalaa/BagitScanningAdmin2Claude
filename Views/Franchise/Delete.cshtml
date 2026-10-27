@@ -1,0 +1,60 @@
+﻿@model FranchisingDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Store</h4>
+    <hr />
+    <dl class="row">
+
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FranchID)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.FranchID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FranchCode)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.FranchCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.CompanyName)
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FranchLocation)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.FranchLocation)
+        </dd>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.BrandName)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.BrandName)
+        </dd>
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit" asp-controller="Franchise" asp-action="deletePOST" asp-route-StrId="@Model.FranchID" asp-route-CompId="@Model.CompID" asp-route-BrndId="@Model.BrandID">Delete</button> |
+
+        <a class="btn btn-secondary" asp-controller="Franchise" asp-action="FranchiseList">Back to List</a>
+    </form>
+</div>

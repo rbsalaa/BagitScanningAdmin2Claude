@@ -1,0 +1,95 @@
+﻿@model IEnumerable<CategoryDTO>
+@{
+    ViewData["Title"] = "Category List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Category List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="category" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add Category</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+              
+                <th>
+                    Category ID
+                </th>
+                <th>
+                    Category Name 
+                </th>
+                <th>
+                    Category  Order
+             
+                <th>
+                    Is Active
+                </th>
+                <th scope="col"> Category  imag</th>
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+                        @item.CategoryID
+
+                    </td>
+                    <td >
+                        @item.CategoryName
+
+                    </td>
+                    <td >
+                        @item.CategoryOrder
+
+                    </td>
+                    <td>
+                        @item.IsActive
+
+                    </td>
+                    <td>
+                        <img src="@item.CategoryPic" width="100px" height="100px" />
+
+                    </td>
+                    
+                    <td class="text-center">
+                        <div class="btn-group w-75" role="Items">
+                            <a class="btn btn-primary mx-2" asp-controller="category" asp-action="Detail" asp-route-id="@item.CategoryID"><i class="bi bi-card-list"></i> &nbsp; Category Details</a>
+
+                            <a class="btn btn-secondary  mx-2 " asp-controller="category" asp-action="Edit" asp-route-id="@item.CategoryID"><i class="bi bi-pencil-fill"></i> &nbsp; Edit</a>
+
+                            <a class="btn btn-warning  mx-2 " asp-controller="category" asp-action="Delete" asp-route-id="@item.CategoryID"><i class="bi bi-trash-fill"></i> &nbsp; Delete</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts{
+
+
+}

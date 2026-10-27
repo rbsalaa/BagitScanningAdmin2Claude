@@ -1,0 +1,61 @@
+﻿@model BannersDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BannerID)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BannerID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BannerTitle)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BannerTitle)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BannerURL)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BannerURL)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BannerStartDate)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BannerStartDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BannerEndDate)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BannerEndDate)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="col-6">
+            <h3 class="text-primary">Banner Preview</h3>
+            @if (!string.IsNullOrEmpty(Model.BannerURL))
+            {
+                <img src="@Model.BannerURL" alt="@Model.BannerTitle" class="img-fluid" />
+            }
+            else
+            {
+                <p>No banner available</p>
+            }
+        </div>
+    </div>
+
+    <a class="btn btn-secondary" asp-action="BannersList">Back to List</a>
+</div>

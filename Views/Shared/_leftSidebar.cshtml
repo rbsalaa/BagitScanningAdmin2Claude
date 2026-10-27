@@ -1,0 +1,221 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SelfKOrderWeb.Areas.Identity.Data
+@inject SignInManager<SelfKOrderWebUser> SignInManager
+@inject UserManager<SelfKOrderWebUser> UserManager
+@{
+    var userName = UserManager.GetUserName(User) ?? "";
+    var initial = string.IsNullOrEmpty(userName) ? "?" : userName.Substring(0, 1).ToUpperInvariant();
+}
+<!-- ========== Left Sidebar ========== -->
+<div class="vertical-menu">
+
+    <div class="navbar-brand-box">
+        <a href="/" class="logo logo-light" aria-label="RBS dashboard">
+            <span class="logo-sm"><img src="~/assets/images/rbslogo.png" alt="RBS" height="26"></span>
+            <span class="logo-lg"><img src="~/assets/images/rbslogo.png" alt="RBS Retail Business Solutions" height="34"></span>
+        </a>
+    </div>
+
+    <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn" id="vertical-menu-btn" aria-label="Collapse menu">
+        <i class="ri-menu-2-line align-middle"></i>
+    </button>
+
+    <div data-simplebar class="vertical-scroll">
+        <div id="sidebar-menu">
+            <ul class="metismenu list-unstyled" id="side-menu">
+
+                <li class="menu-title">Overview</li>
+                <li>
+                    <a href="/" class="waves-effect">
+                        <i class="ri-dashboard-3-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-line-chart-line"></i>
+                        <span>Reports</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Dashboard/OrdersDashBoard">Orders</a></li>
+                        <li><a href="/Dashboard/HardwareDashBoard">Kiosk hardware</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-title">Organisation</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-team-line"></i>
+                        <span>Users &amp; roles</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Users/List">Users</a></li>
+                        <li><a href="/Users/RolesList">Roles</a></li>
+                        <li><a href="/Users/AssignUserRole">Assign users to roles</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-building-2-line"></i>
+                        <span>Master data</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Company/CompanyList">Companies</a></li>
+                        <li><a href="/Brand/BrandList">Brands</a></li>
+                        <li><a href="/Franchise/FranchiseList">Franchises</a></li>
+                        <li><a href="/Branch/BranchList">Branches</a></li>
+                        <li><a href="/Kiosik/KiosikList">Kiosks</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-title">Subscriptions</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-vip-crown-2-line"></i>
+                        <span>Customers</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Customer/CustomerList">Customers</a></li>
+                        <li><a href="/SubscrubtionInfo/SubscrubtionInfoList">Subscriptions</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-title">Kiosk screens</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-slideshow-3-line"></i>
+                        <span>Ads &amp; banners</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Advertisments/AdvertismentsList">Advertisements</a></li>
+                        <li><a href="/Banners/BannersList">Banners</a></li>
+                        <li><a href="/Banners/AssignBannerKiosik">Assign banners to kiosks</a></li>
+                        <li><a href="/Advertisments/AssignAdsKiosik">Assign ads to kiosks</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-title">Finance</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-wallet-3-line"></i>
+                        <span>Payments &amp; tax</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/PaymentMethod/PaymentMethodList">Payment methods</a></li>
+                        <li><a href="/TAXGroup/TAXGroupList">Tax groups</a></li>
+                        <li><a href="/Discounts/DiscountsList">Discounts</a></li>
+                        <li><a href="/ShopDiscounts/DiscountsList">Shop discounts</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-title">Menu &amp; catalogue</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-restaurant-2-line"></i>
+                        <span>Items</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Items/ItemList">Items</a></li>
+                        <li><a href="/Category/List">Categories</a></li>
+                        <li><a href="/Category/assignCategory">Assign items to categories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-book-open-line"></i>
+                        <span>Menus</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Menu/List">Menus</a></li>
+                        <li><a href="/Menu/assignCategory">Assign items to menus</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-add-circle-line"></i>
+                        <span>Modifiers</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Modifier/List">Modifiers</a></li>
+                        <li><a href="/ModifierCategory/List">Modifier categories</a></li>
+                        <li><a href="/Modifier/assignCategory">Modifier categories on items</a></li>
+                        <li><a href="/Modifier/assignModifierCategory">Modifiers in categories</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-archive-stack-line"></i>
+                        <span>Inventory</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="/Inventory/InventoryList">Warehouses &amp; stock</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="dropdown sidebar-user sidebar-user-info">
+        <button type="button" class="btn w-100 border-0 sidebar-user-btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sidebar-avatar" aria-hidden="true">@initial</span>
+            <span class="user-name-text" title="@userName">@userName</span>
+            <i class="ri-more-2-fill" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end">
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/Dashboard/Index" method="post">
+                <button type="submit" class="dropdown-item"><i class="ri-logout-box-r-line me-2"></i>Sign out</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Left Sidebar End -->
+
+<script>
+    // Highlights the current page in the sidebar and keeps exactly one section open.
+    // The template's own script compares full URLs case-sensitively, so "/users/list" and
+    // "/Users/List" did not match and sections could be left open or the wrong link highlighted.
+    // Here the classes metisMenu reads (li.mm-active / ul.mm-show) are set consistently,
+    // so clicking a section afterwards opens and closes it normally.
+    window.addEventListener('load', function () {
+        var menu = document.getElementById('side-menu');
+        if (!menu) return;
+        var norm = function (u) {
+            try { return new URL(u, location.origin).pathname.replace(/\/+$/, '').toLowerCase() || '/'; }
+            catch (e) { return ''; }
+        };
+        var here = norm(location.href);
+        if (here === '/dashboard' || here === '/dashboard/index') here = '/';
+        var best = null, bestLen = -1;
+        menu.querySelectorAll('a[href]').forEach(function (a) {
+            var h = a.getAttribute('href');
+            if (!h || h.indexOf('javascript') === 0) return;
+            var p = norm(h);
+            var hit = p === here || (p !== '/' && here.indexOf(p + '/') === 0);
+            if (hit && p.length > bestLen) { best = a; bestLen = p.length; }
+        });
+        // Same controller, different action (e.g. Items/edit/5) → highlight the section's first link for that controller.
+        if (!best && here !== '/') {
+            var ctrl = '/' + here.split('/')[1];
+            menu.querySelectorAll('.sub-menu a[href]').forEach(function (a) {
+                if (!best && norm(a.getAttribute('href')).indexOf(ctrl + '/') === 0) best = a;
+            });
+        }
+        menu.querySelectorAll('.mm-active').forEach(function (el) { el.classList.remove('mm-active'); });
+        menu.querySelectorAll('.mm-show').forEach(function (el) { el.classList.remove('mm-show'); });
+        menu.querySelectorAll('a.active').forEach(function (el) { el.classList.remove('active'); });
+        if (!best) return;
+        best.classList.add('active');
+        best.setAttribute('aria-current', 'page');
+        var li = best.closest('li');
+        li.classList.add('mm-active');
+        var sub = li.closest('ul.sub-menu');
+        if (sub) {
+            sub.classList.add('mm-show');
+            sub.setAttribute('aria-expanded', 'true');
+            var parentLi = sub.closest('li');
+            parentLi.classList.add('mm-active');
+            var toggle = parentLi.querySelector(':scope > a');
+            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        }
+    });
+</script>

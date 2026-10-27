@@ -1,0 +1,55 @@
+﻿@model TAXGroupDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TAXID)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.TAXID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TAXName)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.TAXName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TAXPercentage)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.TAXPercentage)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsDefault)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.IsDefault)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit" asp-controller="TAXGroup" asp-action="deletePOST" asp-route-id="@Model.TAXID">Delete</button> |
+
+        <a class="btn btn-secondary" asp-area="dafault1" asp-controller="TAXGroup" asp-action="TAXGroupList">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ModifierCategoryDTO>
+@{
+    ViewData["Title"] = "Assign Modifiers to Modifier Category";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+        </div>
+
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+
+
+                <th>
+                    Category Name
+                </th>
+
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @item.ModifierCategoryName
+
+                    </td>
+
+
+
+                    <td class="text-center">
+                        <div class="btn-Roles w-75" role="Roles">
+                            <a class="btn btn-primary mx-2" asp-controller="Modifier" asp-action="assignModToCategory" asp-route-id="@item.ModifierCategoryID"><i class="bi bi-card-list"></i> &nbsp;  Assign Modifier to Cat @item.ModifierCategoryName</a>
+
+                            <a class="btn  btn-primary mx-2" asp-controller="Modifier" asp-action="UnassignModToCategory" asp-route-id="@item.ModifierCategoryID"><i class="bi bi-card-list"></i> &nbsp;  Current Modifiers  </a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}

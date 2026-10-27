@@ -1,0 +1,71 @@
+﻿@model SubscrubtionInfoDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+              
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.CompanyName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BrandName)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BrandName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsCurrentSupscriped)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.IsCurrentSupscriped)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.KiosikCount)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.KiosikCount)
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SubscriptionTitle)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.SubscriptionTitle)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SubscriptionDescription)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.SubscriptionDescription)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CustomerName)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.CustomerName)
+                </dd>
+
+                <dd class="col-sm-20 sub">
+                    <a class="btn btn-primary mx-2" asp-controller="Customer" asp-action="Detail" asp-route-id="@Model.CustomerID"><i class="bi bi-card-list"></i>Customer Details</a>
+
+                </dd>
+
+            </dl>
+        </div>
+
+
+        </br>
+
+    </div>
+    <a class="btn btn-secondary" asp-action="SubscrubtionInfoList">Back to List</a>
+</div>

@@ -1,0 +1,124 @@
+﻿@model TAXGroupDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+
+<hr />
+<div class="row">
+    <partial name="_Notifications" />
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <select id="PreferenceType" asp-for="CompID" class="form-control">
+                <option value="">-- Select Company --</option>
+                @foreach (var item in Model.CompList)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+
+            <select asp-for="BrandID" class="form-control PreferenceType2" disabled>
+                <option value="">-- Select Brand --</option>
+            </select>
+
+            <select asp-for="BranchID" class="form-control PreferenceType3" disabled>
+                <option value="">-- Select Branch --</option>
+            </select>
+
+            <div class="form-group">
+                <label asp-for="TAXName" class="control-label"></label>
+                <input asp-for="TAXName" class="form-control" />
+                <span asp-validation-for="TAXName" class="text-danger"></span>
+            </div>
+              <div class="form-group">
+                <label asp-for="TAXPercentage" class="control-label"></label>
+                <input asp-for="TAXPercentage" class="form-control" />
+                <span asp-validation-for="TAXPercentage" class="text-danger"></span>
+            </div>
+              <div class="form-group">
+                <label asp-for="IsDefault" class="control-label"></label>
+                <input type="checkbox" asp-for="IsDefault"/>
+                <span asp-validation-for="IsDefault" class="text-danger"></span>
+            </div>
+           
+           
+
+            <div class="form-group  pt-3">
+                <input type="submit" value="Save" class="btn btn-primary"  asp-controller="TAXGroup" asp-action="createPost" />
+             
+                | <a class="btn btn-secondary" asp-action="TAXGroupList">Back to List</a>
+            </div>
+          
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+
+            // When Company is changed
+            $("#PreferenceType").change(function () {
+                var companyId = $(this).val();
+                $(".PreferenceType2").empty().prop('disabled', true);
+                $(".PreferenceType3").empty().prop('disabled', true);
+
+                if (companyId) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/PaymentMethod/GetPreferenceValues',
+                        dataType: 'json',
+                        data: { id2: companyId },
+                        success: function (brands) {
+                            $(".PreferenceType2").append('<option value="">-- Select Brand --</option>');
+                            $.each(brands, function (i, brand) {
+                                $(".PreferenceType2").append('<option value="' + brand.Value + '">' + brand.Text + '</option>');
+                            });
+                            $(".PreferenceType2").prop('disabled', false);
+                        },
+                        error: function () {
+                            alert('Failed to retrieve brands.');
+                        }
+                    });
+                }
+            });
+
+            // When Brand is changed
+            $(".PreferenceType2").change(function () {
+                var companyId = $("#PreferenceType").val();
+                var brandId = $(this).val();
+                $(".PreferenceType3").empty().prop('disabled', true);
+
+                if (companyId && brandId) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/PaymentMethod/GetPreferenceValues3',
+                        dataType: 'json',
+                        data: { id3: companyId, id2: brandId },
+                        success: function (branches) {
+                            $(".PreferenceType3").append('<option value="">-- Select Branch --</option>');
+                            $.each(branches, function (i, branch) {
+                                $(".PreferenceType3").append('<option value="' + branch.Value + '">' + branch.Text + '</option>');
+                            });
+                            $(".PreferenceType3").prop('disabled', false);
+                        },
+                        error: function () {
+                            alert('Failed to retrieve branches.');
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,134 @@
+﻿@model OrderDetailsViewModel
+
+<h2>Order Summary</h2>
+
+@* <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Modifiers</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderDetail in Model.OrderDetails)
+        {
+            <tr>
+                <td>@orderDetail.ItemName</td>
+                <td>@orderDetail.Quantity</td>
+                <td>@orderDetail.Price.ToString("C")</td>
+                <td>
+                    @if (orderDetail.Modifiers != null && orderDetail.Modifiers.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var modifier in orderDetail.Modifiers)
+                            {
+                                <li>
+                                    @modifier.ModifierName (@modifier.ModifierPrice.ToString("C"))
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No modifiers</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr /> *@
+
+@if (Model.OrderJsonParsed != null)
+{
+    <h2>Full Order JSON Details</h2>
+
+    <h4>Basic Info</h4>
+    <p><strong>Reference ID:</strong> @Model.OrderJsonParsed.referenceId</p>
+    <p><strong>Status:</strong> @Model.OrderJsonParsed.status</p>
+    <p><strong>Order Name:</strong> @Model.OrderJsonParsed.orderName</p>
+    <p><strong>Source:</strong> @Model.OrderJsonParsed.source</p>
+    <p><strong>Fulfillment Type:</strong> @Model.OrderJsonParsed.fulfillment?.type</p>
+    <p><strong>Fulfillment Notes:</strong> @Model.OrderJsonParsed.fulfillment?.notes</p>
+    <p><strong>Received At:</strong> @Model.OrderJsonParsed.dateReceivedByPos.ToString("yyyy-MM-dd HH:mm:ss")</p>
+
+    <h4>Totals</h4>
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th>Line</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var total in Model.OrderJsonParsed.totals)
+            {
+                <tr>
+                    <td>@total.lineId</td>
+                    <td>@total.value.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Payments</h4>
+    <table class="table table-sm table-striped">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Auth Code</th>
+                <th>Masked PAN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var payment in Model.OrderJsonParsed.payments)
+            {
+                <tr>
+                    <td>@payment.description</td>
+                    <td>@payment.amount.ToString("C")</td>
+                    <td>@payment.authCode</td>
+                    <td>@payment.maskedPAN</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Order Lines</h4>
+    @foreach (var mainItem in Model.OrderJsonParsed.orderLines.Where(l => string.IsNullOrEmpty(l.parentLineId)))
+    {
+        <div class="card mb-2">
+            <div class="card-header bg-light">
+                <strong>@mainItem.description</strong> - @mainItem.unitPrice.ToString("C")
+            </div>
+            <div class="card-body">
+                @{
+                    var modifiers = Model.OrderJsonParsed.orderLines.Where(c => c.parentLineId == mainItem.lineId).ToList();
+                }
+
+                @if (modifiers.Any())
+                {
+                    <ul class="mb-0">
+                        @foreach (var modifier in modifiers)
+                        {
+                            <li>@modifier.description (@modifier.unitPrice.ToString("C"))</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No modifiers</p>
+                }
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-warning">
+        No JSON data available for this order.
+    </div>
+}

@@ -1,0 +1,38 @@
+﻿@model MenuDTO
+
+@{
+    ViewData["Title"] = "Menu Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">@Model.MenuName Details</h3>
+        </div>
+    </div>
+
+    <br />
+
+    <!-- Menu Basic Info -->
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Menu Name</th>
+                <th>Is Current Menu</th>
+                <th>Is Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.MenuID</td>
+                <td>@Model.MenuName</td>
+                <td>@Model.IsCurrentMenu</td>
+                <td>@Model.IsActive</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" asp-action="List">Back to List</a>
+</div>

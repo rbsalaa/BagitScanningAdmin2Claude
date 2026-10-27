@@ -1,0 +1,113 @@
+﻿@model IEnumerable<SubscrubtionInfoDTO>
+@{
+    ViewData["Title"] = "SubscrubtionInfos List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">SubscrubtionInfos List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="SubscrubtionInfo" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add SubscrubtionInfo</a> | 
+            <a class="btn btn-primary" asp-controller="SubscrubtionInfo" asp-action="SubscrubtionHistory"><i class="bi bi-plus-circle"></i> &nbsp; Subscrubtion History</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+              
+                <th>
+                    SubscrubtionInfo ID
+                </th>
+                 <th>
+                    SubscrubtionInfo title
+                </th>
+              
+                <th>
+                    Company Name
+                </th>
+                <th>
+                    Brand Name
+                </th>
+               
+                <th>
+
+                    Kiosik Count
+                </th>
+
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+                        @item.SupscrubtionID
+
+                    </td>
+                    <td>
+                        @item.SubscriptionTitle
+
+                    </td>
+                    <td >
+                        @item.CompanyName
+
+                    </td>
+                    <td>
+                        @item.BrandName
+
+                    </td>
+                   
+                    
+                    <td>
+                        @item.KiosikCount
+
+                    </td>
+
+                    
+                    <td class="text-center">
+
+                        <div class="btn-group w-75" role="SubscrubtionInfo">
+                         
+                            <a class="btn btn-warning  mx-2 " asp-controller="SubscrubtionInfo" asp-action="LicenseList" asp-route-id="@item.carrierString"><i class="bi bi-trash-fill"></i>  Licenses</a>
+
+                            <a class="btn btn-primary mx-2"  asp-controller="SubscrubtionInfo" asp-action="Detail" asp-route-id="@item.SupscrubtionID"><i class="bi bi-card-list"></i> Details</a>
+
+                            <a class="btn btn-secondary  mx-2 " asp-controller="SubscrubtionInfo" asp-action="Edit" asp-route-id="@item.SupscrubtionID"><i class="bi bi-pencil-fill"></i>  Edit</a>
+
+                            <a class="btn btn-warning  mx-2 " asp-controller="SubscrubtionInfo" asp-action="Delete" asp-route-id="@item.SupscrubtionID"><i class="bi bi-trash-fill"></i> Delete</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}

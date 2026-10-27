@@ -1,0 +1,48 @@
+﻿@model BranchDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Store</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BrandCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BrandCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BranchName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BranchName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BrandName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BrandName)
+        </dd>
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit"  asp-controller="Branch" asp-action="deletePOST" asp-route-StrId="@Model.BranchID" asp-route-CompId="@Model.CompID" asp-route-BrndId="@Model.BrandID">Delete</button> |
+
+        <a class="btn btn-secondary" asp-controller="Branch" asp-action="BranchList">Back to List</a>
+    </form>
+</div>

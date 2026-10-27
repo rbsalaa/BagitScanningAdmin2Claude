@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Kiosks";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-4">
+    <h3>Select a Kiosk</h3>
+
+    <select id="kioskDropdown" class="form-control" asp-items="ViewBag.KioskList">
+        <option value="">-- Select Kiosk --</option>
+    </select>
+
+    <div id="kioskDetailsContainer" class="mt-4">
+        <!-- Partial will load here -->
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Function to initialize charts after partial is loaded
+             function initKioskCharts() {
+            // Parse JSON from hidden fields
+            const monthlyDataRaw = document.getElementById('OrdersPerMonthJson')?.value;
+            const yearlyDataRaw = document.getElementById('OrdersPerYearJson')?.value;
+
+            const monthlyDataObj = monthlyDataRaw ? JSON.parse(monthlyDataRaw) : [];
+            const yearlyDataObj = yearlyDataRaw ? JSON.parse(yearlyDataRaw) : [];
+
+            // Monthly Chart
+            const monthlyCanvas = document.getElementById('monthlyChart');
+            if (monthlyCanvas) {
+                const ctx = monthlyCanvas.getContext('2d');
+                const labels = monthlyDataObj.map(m => `${m.Month}/${m.Year}`);
+                const data = monthlyDataObj.map(m => m.OrdersCount);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels.length ? labels : ['No Data'],
+                        datasets: [{
+                            label: 'Orders per Month',
+                            data: data.length ? data : [0],
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+                        scales: { y: { beginAtZero: true }, x: { title: { display: true, text: 'Month/Year' } } }
+                    }
+                });
+            }
+
+            // Yearly Chart
+            const yearlyCanvas = document.getElementById('yearlyChart');
+            if (yearlyCanvas) {
+                const ctx = yearlyCanvas.getContext('2d');
+                const labels = yearlyDataObj.map(y => y.Year.toString());
+                const data = yearlyDataObj.map(y => y.OrdersCount);
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels.length ? labels : ['No Data'],
+                        datasets: [{
+                            label: 'Orders per Year',
+                            data: data.length ? data : [0],
+                            fill: false,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            tension: 0.2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: true }, tooltip: { enabled: true } },
+                        scales: { y: { beginAtZero: true }, x: { title: { display: true, text: 'Year' } } }
+                    }
+                });
+            }
+        }
+
+
+        $(document).ready(function () {
+            $("#kioskDropdown").change(function () {
+                var id = $(this).val();
+
+                if (!id) {
+                    $("#kioskDetailsContainer").empty();
+                    return;
+                }
+
+                $.get("@Url.Action("KIOSIKDashBoardpost", "Dashboard")", { id: id }, function (data) {
+                    // Inject partial HTML
+                    $("#kioskDetailsContainer").html(data);
+
+                    // Use setTimeout 0 to ensure DOM is updated before chart initialization
+                    setTimeout(initKioskCharts, 0);
+                });
+            });
+        });
+    </script>
+}

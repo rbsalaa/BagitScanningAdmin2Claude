@@ -1,0 +1,184 @@
+﻿@model IEnumerable<IGrouping<string, KiosikDTO>>
+@{
+    ViewData["Title"] = "Kiosik List";
+}
+<style>
+    #key {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #8590a5;
+        color: white !important;
+    }
+
+    #UserTable td, #UserTable th {
+        border: 1px solid #ddd;
+    }
+</style>
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Stores List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="Kiosik" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add Kiosik</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Customer
+                </th>
+
+                <th>
+                    Kiosik ID
+                </th>
+                <th>
+                    Kiosik Name
+                </th>
+                <th>
+                    Is Current Subscriped
+                </th>
+                <th>
+                    Is Active
+                </th>
+                <th>
+                    NFC
+                </th>
+                <th>
+                    printer
+                </th>
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var group in Model)
+            {
+
+                <tr id="key">
+                    <td>
+                        @group.Key
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+
+                </tr>
+                @foreach (var item in group)
+                {
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            @item.KiosikID
+
+                        </td>
+                        <td>
+                            @item.KiosikName
+
+                        </td>
+                        <td>
+                            @if (item.IsCurrentSupscriped == true)
+                            {
+
+                                <i style="color:green" class="ri-check-line"></i>
+                            }
+                            else
+                            {
+
+                                <i style="color:darkred" class="ri-close-line"></i>
+                            }
+
+                        </td>
+
+                        <td>
+                            @if (item.IsActive == true)
+                            {
+
+                                <i style="color:green" class="ri-check-line"></i>
+                            }
+                            else
+                            {
+
+                                <i style="color:darkred" class="ri-close-line"></i>
+                            }
+
+                        </td>
+                        <td>
+                            @if (item.NFC == true)
+                            {
+
+                                <i style="color:green" class="ri-check-line"></i>
+                            }
+                            else
+                            {
+
+                                <i style="color:darkred" class="ri-close-line"></i>
+                            }
+
+                        </td>
+                        <td>
+                            @if (item.Printer == true)
+                            {
+
+                                <i style="color:green" class="ri-check-line"></i>
+                            }
+                            else
+                            {
+
+                                <i style="color:darkred" class="ri-close-line"></i>
+                            }
+
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group w-100" role="Kiosik">
+                                <a class="btn btn-primary mx-2" asp-controller="Kiosik" asp-action="Detail" asp-route-KiosikID="@item.KiosikID" asp-route-StrId="@item.BranchID" asp-route-CompId="@item.CompID" asp-route-BrndId="@item.BrandID"><i class="bi bi-card-list"></i> &nbsp; Kiosik Details</a>
+
+                                <a class="btn btn-secondary  mx-2 " asp-controller="Kiosik" asp-action="Edit" asp-route-KiosikId="@item.KiosikID" asp-route-StrId="@item.BranchID" asp-route-CompId="@item.CompID" asp-route-BrndId="@item.BrandID"><i class="bi bi-pencil-fill"></i> &nbsp; Edit</a>
+
+                                <a class="btn btn-warning  mx-2 " asp-controller="Kiosik" asp-action="Delete" asp-route-KiosikId="@item.KiosikID" asp-route-StrId="@item.BranchID" asp-route-CompId="@item.CompID" asp-route-BrndId="@item.BrandID"><i class="bi bi-trash-fill"></i> &nbsp; Delete</a>
+
+
+
+
+                            </div>
+
+                        </td>
+
+
+
+                    </tr>
+
+                }
+
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}

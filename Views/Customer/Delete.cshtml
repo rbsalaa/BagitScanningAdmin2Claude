@@ -1,0 +1,67 @@
+﻿@model CustomerDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerLocation)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.CustomerLocation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerMail)
+        </dt>
+        <dd class="col-sm-20">
+            @Html.DisplayFor(model => model.CustomerPhone)
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsSupscriped)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.IsSupscriped)
+        </dd>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SupscrubtionStartDate)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.SupscrubtionStartDate)
+        </dd>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SupscrubtionEndDate)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.SupscrubtionEndDate)
+        </dd>
+        <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SubKiosikCount)
+        </dt>
+        <dd class="col-sm-20">
+                @Html.DisplayFor(model => model.SubKiosikCount)
+        </dd>
+
+
+
+    </dl>
+
+    <form asp-action="Delete">
+
+        <button class="btn btn-primary" type="submit"  asp-controller="Customer" asp-action="deletePOST" asp-route-id="@Model.CustomerID">Delete</button> |
+
+        <a class="btn btn-secondary"  asp-controller="Customer" asp-action="CustomerList">Back to List</a>
+    </form>
+</div>

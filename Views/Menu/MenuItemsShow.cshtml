@@ -1,0 +1,164 @@
+﻿@model MenuDTO
+@{
+    ViewData["Title"] = "Menu Details";
+}
+
+<style>
+    /* Category Card Styling */
+    .category-card {
+        margin-top: 30px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        border-radius: 12px;
+        border: 1px solid #ddd;
+    }
+
+    .category-card-header {
+        background-color: #f0f4f8;
+        color: #0d6efd;
+        font-weight: 700;
+        font-size: 1.25rem;
+        padding: 15px 20px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        border-bottom: 1px solid #ddd;
+        letter-spacing: 0.5px;
+    }
+
+    /* Rounded item images */
+    img.item-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1.5px solid #ddd;
+        transition: border-color 0.3s ease;
+    }
+
+        img.item-image:hover {
+            border-color: #0d6efd;
+        }
+
+    /* Modifier category style */
+    .modifier-category {
+        background-color: #e3f2fd; /* Light blue */
+        font-weight: 600;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin-bottom: 4px;
+        border-left: 4px solid #2196f3; /* Blue accent */
+    }
+
+    /* Modifier item style */
+    .modifier-item {
+        padding-left: 16px;
+        color: #555;
+        font-size: 0.9rem;
+        margin-bottom: 2px;
+    }
+
+    /* Modifier list */
+    .modifier-list {
+        margin-bottom: 0;
+        margin-top: 4px;
+    }
+</style>
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">@Model.MenuName Items</h3>
+        </div>
+    </div>
+ 
+    <form asp-action="UpdateMenuItems" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MenuID" />
+
+        <h4 class="mt-4">Menu Items</h4>
+
+        @if (Model.categories != null && Model.categories.Any())
+        {
+            @for (int c = 0; c < Model.categories.Count; c++)
+            {
+                var category = Model.categories[c];
+                <div class="category-card">
+                    <div class="category-card-header">@category.CategoryName</div>
+                    <div class="card-body p-0">
+                        @if (category.Items != null && category.Items.Any())
+                        {
+                            <table class="table table-bordered table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Pic</th>
+                                        <th>Item ID</th>
+                                        <th>Item Name</th>
+                                        <th>Modifiers</th>
+                                        <th>Price</th>
+                                        <th>IsEnabled</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < category.Items.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="@category.Items[i].ItemPic" alt="@category.Items[i].ItemName" class="item-image" />
+                                            </td>
+                                            <td>
+                                                @category.Items[i].ItemID
+                                                <input type="hidden" asp-for="categories[c].Items[i].ItemID" />
+                                            </td>
+                                            <td>
+                                                <strong>@category.Items[i].ItemName</strong>
+                                            </td>
+                                            <td>
+                                                @if (category.Items[i].ModifierCategories != null && category.Items[i].ModifierCategories.Any())
+                                                {
+                                                    <ul class="list-unstyled modifier-list">
+                                                        @foreach (var modCat in category.Items[i].ModifierCategories)
+                                                        {
+                                                            <li class="modifier-category">
+                                                                @modCat.ModifierCategoryName
+                                                                <ul class="list-unstyled ps-3">
+                                                                    @foreach (var mod in modCat.Modifiers)
+                                                                    {
+                                                                        <li class="modifier-item">@mod.ModifierName (@mod.ModifierPrice.ToString("N2") ﷼)</li>
+                                                                    }
+                                                                </ul>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">No modifiers</span>
+                                                }
+                                            </td>
+                                            <td>@($"{category.Items[i].ItemPrice:N2} ﷼")</td>
+                                            <td>
+                                                <input asp-for="categories[c].Items[i].IsEnabled" type="checkbox" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p class="text-muted m-3">No items in this category.</p>
+                        }
+                    </div>
+                </div>
+            }
+
+            <button type="submit" class="btn btn-primary mt-4">Update Items</button>
+        }
+        else
+        {
+            <p>No categories or items found for this menu.</p>
+        }
+    </form>
+
+    <a class="btn btn-secondary mt-2" asp-action="List">Back to List</a>
+</div>

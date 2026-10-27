@@ -1,0 +1,153 @@
+﻿
+
+@model List<GroupedAspNavigationMenuDTO>
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+<h4>Role Permissions</h4>
+<hr />
+@*
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="EditRolePermission">
+            <div class="form-group">
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+
+                            <th>Group Code</th>
+                         
+                            <th>Permissions</th>
+
+                        </tr>
+                    </thead>
+                  
+                    <tbody>
+                            @foreach (var group in Model)
+                            {
+                           
+
+                            <tr>
+                                <td>@group.code</td>
+                             
+                                <td>
+                                    <ul>
+                                            @foreach (var item in group.Items)
+                                            {
+                                            @Html.HiddenFor(x => group.code)
+                                            <input type="checkbox" asp-for="@item.Permitted" />
+                                            <input type="hidden" asp-for="@item.Id" />
+                                            <input type="hidden" asp-for="@item.Name" />
+                                            <input type="hidden" asp-for="@item.FatherRoleID" />
+                                            <li>@item.Name </li>
+                                            }
+                                    </ul>
+                                </td>
+                            </tr>
+                            }
+                    </tbody>
+                     
+                </table>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" asp-controller="Users" asp-action="EditRolePermission" />
+                <a class="btn btn-secondary" asp-action="RolesList">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>*@
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="EditRolePermission">
+            <div class="form-group">
+                <label>
+    <input type="checkbox" id="selectAllPermissions" /> Select All Permissions
+</label>
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                         <tr>
+
+                            <th> Code</th>
+
+                            <th>Permissions </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td> @Model[i].code    <input type="hidden" asp-for="@Model[i].RoleID" /> </td>
+                                 <td>
+   <ul>
+                                @for (int j = 0; j < Model[i].Items.Count(); j++)
+                                {
+
+
+                                  
+                                        @Html.HiddenFor(x => x[i].code)
+                                            <label  >|</label>
+                                        <input type="checkbox" class="perm-checkbox" asp-for="@Model[i].Items[j].Permitted" />
+                                        <input type="hidden" asp-for="@Model[i].Items[j].Id" />
+                                        <input type="hidden" asp-for="@Model[i].Items[j].Name" />
+                                        <input type="hidden" asp-for="@Model[i].Items[j].FatherRoleID" />
+
+                                        <label style="margin-left:10px;"
+                                       asp-for="@Model[i].Items[j].Permitted">@Model[i].Items[j].Name</label>
+
+
+                                  
+
+
+
+
+
+
+                                }
+                                 </ul>
+                                  </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" asp-controller="Users" asp-action="EditRolePermission" />
+                <a class="btn btn-secondary" asp-action="RolesList">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+    @if (TempData["error"] != null)
+    {
+        <script type="text/javascript">
+            toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["error"]?.ToString())));
+        </script>
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Select All checkbox functionality
+            $('#selectAllPermissions').change(function () {
+                var checked = $(this).is(':checked');
+                $('.perm-checkbox').prop('checked', checked);
+            });
+        });
+    </script>
+}
+

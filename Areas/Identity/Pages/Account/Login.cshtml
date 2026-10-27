@@ -1,0 +1,113 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewBag.Title = "Sign in";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<main class="rbs-login">
+
+    <section class="rbs-login__brand" aria-hidden="true">
+        <img class="rbs-login__logo" src="~/assets/images/rbslogo.png" alt="" />
+
+        <div class="rbs-login__pitch">
+            <h2>Run every kiosk from one place.</h2>
+            <p>Menus, items, ads and orders for all your branches, in one admin console.</p>
+        </div>
+
+        @* A kiosk screen drawn in CSS: item tiles like the RBS logo, one in the brand red. *@
+        <div class="rbs-kiosk">
+            <div class="rbs-kiosk__screen">
+                <div class="rbs-kiosk__bar"><span></span><span></span></div>
+                <div class="rbs-kiosk__tiles">
+                    <i></i><i class="is-brand"></i><i></i>
+                    <i></i><i></i><i></i>
+                </div>
+                <div class="rbs-kiosk__cart">
+                    <span></span>
+                    <b></b>
+                </div>
+            </div>
+            <div class="rbs-kiosk__stand"></div>
+        </div>
+    </section>
+
+    <section class="rbs-login__panel">
+        <div class="rbs-login__form">
+            <img class="rbs-login__logo-sm" src="~/assets/images/rbslogo.png" alt="RBS Retail Business Solutions" />
+
+            <h1>Sign in</h1>
+            <p class="rbs-login__lead">Use the email and password your RBS administrator gave you.</p>
+
+            <form id="account" method="post" novalidate>
+                <div asp-validation-summary="ModelOnly" class="rbs-login__alert" role="alert"></div>
+
+                <div class="rbs-field">
+                    <label asp-for="Input.Email">Email</label>
+                    <div class="rbs-field__control">
+                        <i class="ri-mail-line" aria-hidden="true"></i>
+                        <input asp-for="Input.Email" class="form-control" type="email" autocomplete="username" placeholder="name@company.com" aria-required="true" autofocus />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="rbs-field">
+                    <label asp-for="Input.Password">Password</label>
+                    <div class="rbs-field__control">
+                        <i class="ri-lock-2-line" aria-hidden="true"></i>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" placeholder="Your password" aria-required="true" />
+                        <button type="button" class="rbs-field__toggle" id="toggle-password" aria-label="Show password" aria-pressed="false">
+                            <i class="ri-eye-line" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-check rbs-login__remember">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    <label class="form-check-label" asp-for="Input.RememberMe">Keep me signed in</label>
+                </div>
+
+                <button id="login-submit" type="submit" class="btn btn-primary rbs-login__submit">
+                    <span class="rbs-login__submit-text">Sign in</span>
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <p class="rbs-login__help">Forgot your password? Ask your company's RBS administrator to reset it.</p>
+        </div>
+
+        <footer class="rbs-login__footer">&copy; @DateTime.Now.Year RBS Retail Business Solutions</footer>
+    </section>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            var pwd = document.getElementById('Input_Password');
+            var toggle = document.getElementById('toggle-password');
+            if (pwd && toggle) {
+                toggle.addEventListener('click', function () {
+                    var show = pwd.type === 'password';
+                    pwd.type = show ? 'text' : 'password';
+                    toggle.setAttribute('aria-pressed', show);
+                    toggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+                    toggle.querySelector('i').className = show ? 'ri-eye-off-line' : 'ri-eye-line';
+                    pwd.focus();
+                });
+            }
+            var form = document.getElementById('account');
+            var btn = document.getElementById('login-submit');
+            if (form && btn) {
+                form.addEventListener('submit', function () {
+                    if (window.jQuery && jQuery.fn.valid && !jQuery(form).valid()) return;
+                    btn.disabled = true;
+                    btn.querySelector('.rbs-login__submit-text').textContent = 'Signing in';
+                    btn.querySelector('.spinner-border').classList.remove('d-none');
+                });
+            }
+        })();
+    </script>
+}

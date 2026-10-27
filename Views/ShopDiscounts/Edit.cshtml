@@ -1,0 +1,129 @@
+﻿@model StoreMenuDiscountsDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DiscountMenuID" />
+            <input type="hidden" asp-for="IsActive" />
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items="Model.CompList"></select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control PreferenceType2" asp-items="Model.BrandList"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BranchID" class="control-label"></label>
+                <select asp-for="BranchID" class="form-control PreferenceType3" asp-items="Model.BranchList"></select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DiscountTitle" class="control-label"></label>
+                <input asp-for="DiscountTitle" class="form-control" />
+                <span asp-validation-for="DiscountTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountCode" class="control-label"></label>
+                <input asp-for="DiscountCode" class="form-control" />
+                <span asp-validation-for="DiscountCode" class="text-danger"></span>
+            </div>
+            <div class="form-group ">
+                <label asp-for="IsAllMenuDiscount" class="control-label"></label>
+                <input type="checkbox" asp-for="IsAllMenuDiscount" />
+                <span asp-validation-for="IsAllMenuDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group pt-3">
+                <label asp-for="DiscountPercintage" class="control-label"></label>
+                <input asp-for="DiscountPercintage" class="form-control" />
+                <span asp-validation-for="DiscountPercintage" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3 pt-3">
+                <label asp-for="IsPercintage" class="control-label"></label>
+                <input type="checkbox" asp-for="IsPercintage" />
+                <span asp-validation-for="IsPercintage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountStartDate" class="control-label"></label>
+                <input asp-for="DiscountStartDate" class="form-control" />
+                <span asp-validation-for="DiscountStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountEndDate" class="control-label"></label>
+                <input asp-for="DiscountEndDate" class="form-control" />
+                <span asp-validation-for="DiscountEndDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group  pt-3">
+                <input type="submit" value="Save" class="btn btn-primary" asp-controller="ShopDiscounts" asp-action="EditPost" />
+                | <a class="btn btn-secondary" asp-action="DiscountsList">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @if (TempData["error"] != null)
+    {
+        <script type="text/javascript">
+            toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["error"]?.ToString())));
+        </script>
+    }
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#PreferenceType").change(function () {
+                $(".PreferenceType2").empty();
+                $(".PreferenceType3").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '/ShopDiscounts/GetPreferenceValues',
+                    dataType: 'json',
+                    data: { id2: $(this).val() },
+                    success: function (data) {
+                        $(".PreferenceType2").append('<option value="">Select Brand</option>');
+                        $.each(data, function (i, item) {
+                            $(".PreferenceType2").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                        });
+                    }
+                });
+            });
+
+            $(".PreferenceType2").change(function () {
+                $(".PreferenceType3").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '/ShopDiscounts/GetPreferenceValues3',
+                    dataType: 'json',
+                    data: {
+                        id2: $(".PreferenceType2").val(),
+                        id3: $("#PreferenceType").val()
+                    },
+                    success: function (data) {
+                        $(".PreferenceType3").append('<option value="">Select Branch</option>');
+                        $.each(data, function (i, item) {
+                            $(".PreferenceType3").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

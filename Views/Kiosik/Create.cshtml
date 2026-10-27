@@ -1,0 +1,151 @@
+﻿@model KiosikDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h1>Create</h1>
+
+<h4>Kiosik</h4>
+<hr />
+<partial name="_Notifications" />
+<div class="row">
+    <form asp-action="Create">
+       
+            <div class="col-md-6">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+              
+                <div class="form-group">
+               
+                    <div class="form-group">
+                        <label asp-for="KiosikName" class="control-label"></label>
+                    <input asp-for="KiosikName" class="form-control" />
+                    <span asp-validation-for="KiosikName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KiosikRegion" class="control-label"></label>
+                    <input asp-for="KiosikRegion" class="form-control" />
+                    <span asp-validation-for="KiosikRegion" class="text-danger"></span>
+                    </div>
+                </div>
+               
+
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items=@Model.CompList>
+                    <option value="">Select Company </option>
+                </select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select id="BrandID" asp-for="BrandID" class="form-control" asp-items=@Model.BrandList>
+                </select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BranchID" class="control-label"></label>
+                <select asp-for="BranchID" class="form-control" asp-items=@Model.BranchList>
+                </select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <select asp-for="CustomerID" class="form-control" asp-items=@Model.CustomerList>
+                    <option value="">Select Customer </option>
+                </select>
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuID" class="control-label"></label>
+                <select asp-for="MenuID" class="form-control" asp-items=@Model.MenuList>
+                    <option value="">Select Menu </option>
+                </select>
+                <span asp-validation-for="MenuID" class="text-danger"></span>
+            </div>
+
+
+        </div>
+
+
+        <div class="form-group  pb-3">
+            <input type="submit" value="Save" class="btn btn-primary" asp-controller="Kiosik" asp-action="CreatePost" />
+            | <a class="btn btn-secondary"  asp-action="KiosikList">Back to List</a>
+        </div>
+
+
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script type="text/javascript">
+
+      $(document).ready(function () {
+          //Dropdownlist Selectedchange event
+            $("#BrandID").change(function () {
+                $("#BranchID").empty();
+              $.ajax({
+                  type: 'POST',
+                    url: 'GetPreferenceValues2', // we are calling json method
+                  dataType: 'json',
+                    data: { id: $("#PreferenceType").val(), id2: $("#BrandID").val() },
+                  success: function (states) {
+                      // states contains the JSON formatted list
+                      // of states passed from the controller
+
+                        $("#BranchID").append('<option value="' + "0" + '">' + "Select Branch" + '</option>');
+                      debugger;
+                      $.each(states, function (i, state) {
+
+                            $("#BranchID").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                          // here we are adding option for States
+                      });
+
+                  },
+                  error: function (ex) {
+                      alert('Failed to retrieve states.' + ex);
+                  }
+              });
+              return false;
+          })
+
+
+
+            $("#PreferenceType").change(function () {
+                $("#BrandID").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: 'GetPreferenceValues', // we are calling json method
+                    dataType: 'json',
+                    data: { id: $("#PreferenceType").val() },
+                    success: function (states) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+
+                        $("#BrandID").append('<option value="' + "0" + '">' + "Select Brand" + '</option>');
+                        debugger;
+                        $.each(states, function (i, state) {
+                         
+                            $("#BrandID").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                            // here we are adding option for States
+                        });
+
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+                    }
+                });
+                return false;
+            })
+      });
+</script>
+}

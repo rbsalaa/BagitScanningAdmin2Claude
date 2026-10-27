@@ -1,0 +1,87 @@
+﻿@model PaymentMethodDTO
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="EditPost" method="post">
+            <input type="hidden" asp-for="PaymentMethodID" />
+            <input type="hidden" asp-for="IsActive" />
+
+            <div class="form-group">
+                <label asp-for="PaymentMethodName" class="control-label"></label>
+                <input asp-for="PaymentMethodName" class="form-control" />
+                <span asp-validation-for="PaymentMethodName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentMethodNameAr" class="control-label"></label>
+                <input asp-for="PaymentMethodNameAr" class="form-control" />
+                <span asp-validation-for="PaymentMethodNameAr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompID"></label>
+                <select id="CompID" asp-for="CompID" class="form-control" asp-items="Model.CompList"></select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID"></label>
+                <select id="BrandID" asp-for="BrandID" class="form-control" asp-items="Model.BrandList"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BranchID"></label>
+                <select id="BranchID" asp-for="BranchID" class="form-control" asp-items="Model.BranchList"></select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="PaymentMethodList" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+
+            // Load Brands when CompID changes
+            $('#CompID').change(function () {
+                const compId = $(this).val();
+                $('#BrandID').empty().append('<option value="">Select Brand</option>');
+                $('#BranchID').empty().append('<option value="">Select Branch</option>');
+
+                if (compId) {
+                    $.post('/PaymentMethod/GetPreferenceValues', { id2: compId }, function (brands) {
+                        $.each(brands, function (i, item) {
+                          
+                            $('#BrandID').append($('<option>', { value: item.Value, text: item.Text }));
+                        });
+                    });
+                }
+            });
+
+            // Load Branches when BrandID changes
+            $('#BrandID').change(function () {
+                const brandId = $(this).val();
+                const compId = $('#CompID').val();
+                $('#BranchID').empty().append('<option value="">Select Branch</option>');
+
+                if (brandId && compId) {
+                    $.post('/PaymentMethod/GetPreferenceValues3', { id2: brandId, id3: compId }, function (branches) {
+                        $.each(branches, function (i, item) {
+
+                            $('#BranchID').append($('<option>', { value: item.Value, text: item.Text }));
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+}

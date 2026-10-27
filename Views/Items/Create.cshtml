@@ -1,0 +1,191 @@
+﻿@model ItemDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h1>Create</h1>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <partial name="_Notifications" />
+    <div class="col-md-4">
+        @* <form asp-action="createPost" method="post"  enctype=" multipart /form-data"> *@
+            <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <select id="PreferenceType" asp-for="CompID" class="form-control">
+                <option value="">-- Select Company --</option>
+                @foreach (var item in Model.CompList)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+
+            <select asp-for="BrandID" class="form-control PreferenceType2" disabled>
+                <option value="">-- Select Brand --</option>
+            </select>
+
+            <select asp-for="BranchID" class="form-control PreferenceType3" disabled>
+                <option value="">-- Select Branch --</option>
+            </select>
+            <div class="form-group">
+                <label asp-for="AlohaProductID" class="control-label"></label>
+                <input asp-for="AlohaProductID" class="form-control" />
+                <span asp-validation-for="AlohaProductID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pb-3">
+                <label asp-for="ItemName" class="control-label"></label>
+                <input asp-for="ItemName" class="form-control" />
+                <span asp-validation-for="ItemName" class="text-danger"></span>
+            </div> <div class="form-group pb-3">
+                <label asp-for="ItemName_AR" class="control-label"></label>
+                <input asp-for="ItemName_AR" class="form-control" />
+                <span asp-validation-for="ItemName_AR" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Calories" class="control-label"></label>
+                <input asp-for="Calories" class="form-control" />
+                <span asp-validation-for="Calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Steps" class="control-label"></label>
+                <input asp-for="Steps" class="form-control" />
+                <span asp-validation-for="Steps" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Alergies" class="control-label"></label>
+                <input asp-for="Alergies" class="form-control" placeholder="make comma between every type (,) ex:(onnion,milk)" />
+                <span asp-validation-for="ItemPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlergiesAr" class="control-label"></label>
+                <input asp-for="AlergiesAr" class="form-control" placeholder="make comma between every type (,) ex:(onnion,milk)" />
+                <span asp-validation-for="AlergiesAr" class="text-danger"></span>
+            </div>
+
+             <div class="form-group pb-3">
+                <label asp-for="ItemDescription" class="control-label"></label>
+                <textarea asp-for="ItemDescription" class="form-control"  rows="4"></textarea>
+                <span asp-validation-for="ItemDescription" class="text-danger"></span>
+            </div><div class="form-group pb-3">
+                <label asp-for="ItemDescription_AR" class="control-label"></label>
+                <textarea asp-for="ItemDescription_AR" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="ItemDescription_AR" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemPrice" class="control-label"></label>
+                <input asp-for="ItemPrice" class="form-control" />
+                <span asp-validation-for="ItemPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="IsEnabled" class="control-label"></label>
+                <input asp-for="IsEnabled" class="form-checkbox" />
+                <span asp-validation-for="IsEnabled" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group pb-3">
+                <label asp-for="IsGroupItem" class="control-label"></label>
+                <input type="checkbox" id="showSelect" class="form-checkbox" />
+                <span asp-validation-for="IsGroupItem" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pb-3" id="selectGroup" style="display: none;">
+                <label asp-for="GroupID" class="control-label"></label>
+                <select asp-for="GroupID" class="form-control" asp-items="@Model.GrpList">
+                </select>
+                <span asp-validation-for="GroupID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pb-3">
+
+                <div class="custom-file">
+                    <input asp-for="@Model.File" type="file" class="custom-file-input fileUpload" accept="image/jpeg" />
+                </div>
+            </div>
+           
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary"  asp-controller="Items" asp-action="createPost" />
+             
+                | <a class="btn btn-secondary" asp-action="ItemList">Back to List</a>
+            </div>
+          
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    // JavaScript to toggle the select list based on the checkbox
+    document.getElementById("showSelect").addEventListener("change", function () {
+        var selectGroup = document.getElementById("selectGroup");
+        selectGroup.style.display = this.checked ? "block" : "none";
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        // When Company is changed
+        $("#PreferenceType").change(function () {
+            var companyId = $(this).val();
+            $(".PreferenceType2").empty().prop('disabled', true);
+            $(".PreferenceType3").empty().prop('disabled', true);
+
+            if (companyId) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/PaymentMethod/GetPreferenceValues',
+                    dataType: 'json',
+                    data: { id2: companyId },
+                    success: function (brands) {
+                        $(".PreferenceType2").append('<option value="">-- Select Brand --</option>');
+                        $.each(brands, function (i, brand) {
+                            $(".PreferenceType2").append('<option value="' + brand.Value + '">' + brand.Text + '</option>');
+                        });
+                        $(".PreferenceType2").prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Failed to retrieve brands.');
+                    }
+                });
+            }
+        });
+
+        // When Brand is changed
+        $(".PreferenceType2").change(function () {
+            var companyId = $("#PreferenceType").val();
+            var brandId = $(this).val();
+            $(".PreferenceType3").empty().prop('disabled', true);
+
+            if (companyId && brandId) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/PaymentMethod/GetPreferenceValues3',
+                    dataType: 'json',
+                    data: { id3: companyId, id2: brandId },
+                    success: function (branches) {
+                        $(".PreferenceType3").append('<option value="">-- Select Branch --</option>');
+                        $.each(branches, function (i, branch) {
+                            $(".PreferenceType3").append('<option value="' + branch.Value + '">' + branch.Text + '</option>');
+                        });
+                        $(".PreferenceType3").prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Failed to retrieve branches.');
+                    }
+                });
+            }
+        });
+
+    });
+</script>

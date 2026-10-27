@@ -1,0 +1,59 @@
+﻿@model FranchisingDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FranchID)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.FranchID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FranchCode)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.FranchCode)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.CompanyName)
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.FranchLocation)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.FranchLocation)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CompanyName)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.CompanyName)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.BrandName)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.BrandName)
+                </dd>
+               
+
+            </dl>
+        </div>
+      
+
+      </br>
+
+     </div>
+    <a class="btn btn-secondary" asp-action="FranchiseList">Back to List</a>
+</div>

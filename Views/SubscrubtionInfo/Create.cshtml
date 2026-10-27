@@ -1,0 +1,116 @@
+﻿@model SubscrubtionInfoDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<hr />
+<div class="row">
+    <partial name="_Notifications" />
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="SupscrubtionID" class="control-label"></label>
+                <input asp-for="SupscrubtionID" class="form-control" />
+                <span asp-validation-for="SupscrubtionID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubscriptionTitle" class="control-label"></label>
+                <input asp-for="SubscriptionTitle" class="form-control" />
+                <span asp-validation-for="SubscriptionTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubscriptionDescription" class="control-label"></label>
+                <input  asp-for="SubscriptionDescription" class="form-control" />
+                <span asp-validation-for="SubscriptionDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="IsCurrentSupscriped" class="control-label"></label>
+                <input type="checkbox" asp-for="IsCurrentSupscriped"  />
+                <span asp-validation-for="IsCurrentSupscriped" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items=@Model.CompList><option value=""> Select Company</option>
+                </select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control PreferenceType2" asp-items=@Model.BrandList>
+                </select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <select asp-for="CustomerID" class="form-control" asp-items=@Model.CustomerList>
+                    <option>Please select one</option>
+                </select>
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary"  asp-controller="SubscrubtionInfo" asp-action="createPost" />
+             
+                | <a class="btn btn-secondary" asp-action="SubscrubtionInfoList">Back to List</a>
+            </div>
+          
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //Dropdownlist Selectedchange event
+            $("#PreferenceType").change(function () {
+                $('#CompID').val($("#PreferenceType").val());
+                $(".PreferenceType2").empty();
+                var ports = $('.PreferenceType2');
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'GetPreferenceValues', // we are calling json method
+                    dataType: 'json',
+                    data: { id: $("#PreferenceType").val() },
+                    success: function (states) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller    debugger;
+
+                        $(".PreferenceType2").append('<option value="' + "0" + '">' + "Select Brand" + '</option>');
+
+                        $.each(states, function (i, state) {
+
+                            $(".PreferenceType2").append($('<option></option>').text(state.Text).val(state.Value));
+
+                            // here we are adding option for States
+                        });
+
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+                    }
+                });
+                return false;
+            })
+            $(".PreferenceType2").change(function () {
+
+                $('#BrndId').val($(".PreferenceType2").val());
+
+            })
+        });
+
+    </script>
+}

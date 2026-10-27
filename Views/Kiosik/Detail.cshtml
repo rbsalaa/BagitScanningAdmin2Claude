@@ -1,0 +1,65 @@
+﻿@model KiosikDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.BranchID)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.BranchID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.KiosikName)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.KiosikName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.KiosikRegion)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.KiosikRegion)
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CompName)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.CompName)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.BrandName)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.BrandName)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.BranchName)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.BranchName)
+                </dd>
+                <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IsCurrentSupscriped)
+                </dt>
+                <dd class="col-sm-20">
+                        @Html.DisplayFor(model => model.IsCurrentSupscriped)
+                </dd>
+
+
+            </dl>
+        </div>
+      
+
+      </br>
+
+     </div>
+    <a class="btn btn-secondary" asp-action="KiosikList">Back to List</a>
+</div>

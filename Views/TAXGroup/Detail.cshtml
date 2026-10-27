@@ -1,0 +1,54 @@
+﻿@model TAXGroupDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TAXID)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.TAXID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TAXName)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.TAXName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TAXPercentage)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.TAXPercentage)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsDefault)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.IsDefault)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.IsActive)
+                </dd>
+
+
+            </dl>
+        </div>
+
+
+        </br>
+
+    </div>
+    <a class="btn btn-secondary" asp-action="TAXGroupList">Back to List</a>
+</div>

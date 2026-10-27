@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    @await Html.PartialAsync("~/Views/Shared/_TitleMeta.cshtml")
+
+    @RenderSection("styles", false)
+
+    @await Html.PartialAsync("~/Views/Shared/_headCSS.cshtml")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+
+    @* jQuery is loaded once, here in <head>, because many pages run inline scripts in the body.
+       Pages used to load it again (up to four times), which wiped plugins such as DataTables and
+       metisMenu that had been attached to the first copy. *@
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+</head>
+<body data-sidebar="colored">
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        @await Html.PartialAsync("~/Views/Shared/_header.cshtml")
+        @await Html.PartialAsync("~/Views/Shared/_leftSidebar.cshtml")
+
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    @await Html.PartialAsync("~/Views/Shared/pagetitle.cshtml")
+
+                    @RenderBody()
+
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            @RenderSection("externalhtml", required: false)
+
+            @await Html.PartialAsync("~/Views/Shared/_footer.cshtml")
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+    @await Html.PartialAsync("~/Views/Shared/_rightSidebar.cshtml")
+
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+
+    <!-- JAVASCRIPT (charts, maps and dashboard.init.js are now loaded only by the dashboard pages that use them) -->
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/assets/js/app.js" asp-append-version="true"></script>
+    <!-- Icon -->
+    <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

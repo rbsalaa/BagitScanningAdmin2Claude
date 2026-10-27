@@ -1,0 +1,79 @@
+﻿@model DiscountsDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container p-3">
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">General Details</h3>
+            <dl class="row">
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DiscountID)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.DiscountID)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DiscountTitle)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.DiscountTitle)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DiscountCode)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.DiscountCode)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DiscountPercintage)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.DiscountPercintage)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsPercintage)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.IsPercintage)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.MAXUserNum)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.MAXUserNum)
+                </dd>
+               
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DiscountStartDate)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.DiscountStartDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DiscountEndDate)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.DiscountEndDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </dt>
+                <dd class="col-sm-20">
+                    @Html.DisplayFor(model => model.IsActive)
+                </dd>
+
+
+            </dl>
+        </div>
+
+
+        </br>
+
+    </div>
+    <a class="btn btn-secondary" asp-action="DiscountsList">Back to List</a>
+</div>

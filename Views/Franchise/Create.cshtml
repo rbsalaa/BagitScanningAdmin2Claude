@@ -1,0 +1,107 @@
+﻿@model FranchisingDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h1>Create</h1>
+
+<h4>Store</h4>
+<hr />
+<partial name="_Notifications" />
+<div class="row">
+    <form asp-action="Create">
+       
+            <div class="col-md-6">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+              
+                <div class="form-group">
+               
+                    <div class="form-group">
+                        <label asp-for="FranchCode" class="control-label"></label>
+                    <input asp-for="FranchCode" class="form-control" />
+                    <span asp-validation-for="FranchCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FranchName" class="control-label"></label>
+                    <input asp-for="FranchName" class="form-control" />
+                    <span asp-validation-for="FranchName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                    <label asp-for="FranchLocation" class="control-label"></label>
+                    <input asp-for="FranchLocation" class="form-control" />
+                    <span asp-validation-for="FranchLocation" class="text-danger"></span>
+                    </div>
+                    
+                </div>
+
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items=@Model.CompList>
+                    <option value="">Select Company</option>
+                </select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select  asp-for="BrandID" class="form-control" asp-items=@Model.BrandList>
+                </select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            </div>
+
+
+        <div class="form-group  pb-3">
+            <input type="submit" value="Save" class="btn btn-primary" asp-controller="Franchise" asp-action="CreatePost" />
+            | <a class="btn btn-secondary" asp-action="FranchiseList">Back to List</a>
+        </div>
+
+
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script type="text/javascript">
+
+      $(document).ready(function () {
+          //Dropdownlist Selectedchange event
+          $("#PreferenceType").change(function () {
+                $("#BrandID").empty();
+              $.ajax({
+                  type: 'POST',
+                    url: 'GetPreferenceValues', // we are calling json method
+                  dataType: 'json',
+                  data: { id: $("#PreferenceType").val() },
+                  success: function (states) {
+                      // states contains the JSON formatted list
+                      // of states passed from the controller
+
+                        $("#BrandID").append('<option value="' + "0" + '">' + "Select Brand" + '</option>');
+                      debugger;
+                      $.each(states, function (i, state) {
+                      
+                            $("#BrandID").append('<option value="' + state.Value + '">' + state.Text + '</option>');
+                          // here we are adding option for States
+                      });
+
+                  },
+                  error: function (ex) {
+                      alert('Failed to retrieve states.' + ex);
+                  }
+              });
+              return false;
+          })
+      });
+</script>
+}

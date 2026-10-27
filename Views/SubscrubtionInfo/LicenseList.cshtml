@@ -1,0 +1,86 @@
+﻿@model SubscrubtionInfoDetailsDTO
+<style>
+    .sub {
+        color: green;
+    }
+</style>
+<partial name="_Notifications" />
+<div class="container p-3">
+    <div class="row pt-4">
+     
+        <div class="col-12 text-end">
+            <a class="btn btn-warning  mx-2 " asp-controller="SubscrubtionInfo" asp-action="AddLicense" ><i class="bi bi-trash-fill"></i> Add Licenses</a>
+
+
+        </div>
+
+    </div>
+
+   
+    <div class="row pt-4">
+
+        <h3 class="text-primary">License Kiosiks Details</h3>
+        @if (Model.LisecsesList.Count() > 0)
+        {
+            <div class="col-12">
+               
+                <dl class="row pt-3">
+
+                    @foreach (var item in Model.LisecsesList)
+                    {
+                        <div class="col-6">
+                         
+                            <div class="card" style="width: 18rem;">
+                                <a class="btn  mx-2  text-end" asp-controller="SubscrubtionInfo" asp-action="DeleteLicense" asp-route-id="@item.SupscrubtionDetailID" asp-route-subID="@item.SupscrubtionID" asp-route-carrier="@Model.carrierString"><i class="ri-delete-bin-5-line"></i> </a>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Kiosik: @item.KiosikName</h5>
+                                    
+
+
+                                 
+                                    <p class="card-text">Brand: @item.BrandName</p>
+                                    <p class="card-text">Branch: @item.BranchName</p>
+                                    <p class="card-text">From @item.SupscrubtionStartDate   </p>
+                                    <p class="card-text">To @item.SupscrubtionEndDate  </p>
+                                    <p class="card-text">Subscruption Key: @item.Key  </p>
+                                    @if (item.ActivationStauts)
+                                    {
+
+                                        <p class="card-text"><i style="color:green" class="ri-check-line">( Activated !)</i> </p>
+                                    }
+                                    else
+                                    {
+
+                                        <p class="card-text"> <i style="color:darkred" class="ri-close-line">( Not Activated Yet)</i></p>
+                                    }
+
+                                    <a class="btn btn-primary mx-2 pt-2" asp-controller="Kiosik" asp-action="Detail" asp-route-KiosikID="@item.KiosikID" asp-route-StrId="@item.BranchID" asp-route-CompId="@Model.CompID" asp-route-BrndId="@item.BrandID"><i class="bi bi-card-list"></i> &nbsp; Kiosik Details</a>
+                                  
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+
+
+
+
+
+
+                </dl>
+            </div>
+
+        }
+        else
+        {
+            <p class="card-text">No Assigned License found for this subscription</p>
+        }
+        
+
+        </br>
+
+    </>
+        <a class="btn btn-secondary w-50" asp-action="SubscrubtionInfoList">Back to List</a>
+</div>

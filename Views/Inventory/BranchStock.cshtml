@@ -1,0 +1,66 @@
+﻿@model BranchStockDTO
+@{
+    ViewBag.Title = "Branch Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_Notifications" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mb-3">Branch Stock : @Model.branchName</h4>
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-hover table-nowrap align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col" style="width: 120px;">Count</th>
+                                <th scope="col" style="width: 120px;">Min</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Last Transfer</th>
+                                <th scope="col" style="width: 100px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model.stockItems)
+                            {
+                                <tr>
+                                    <form asp-action="UpdateBranchStockPost" asp-controller="Inventory" method="post">
+                                        <input type="hidden" name="BranchStockID" value="@s.BranchStockID" />
+                                        <input type="hidden" name="BranchID" value="@Model.branchID" />
+                                    <td>@s.Item?.ItemName</td>
+                                    <td>@s.Unit?.UnitName</td>
+                                    <td><input type="number" step="0.01" name="Count" value="@s.Count" class="form-control form-control-sm" /></td>
+                                    <td><input type="number" step="0.01" name="MinThreshold" value="@s.MinThreshold" class="form-control form-control-sm" /></td>
+                                    <td>
+                                        @if (s.Count <= 0)
+                                        {
+                                            <span class="badge bg-dark">Out Of Stock</span>
+                                        }
+                                        else if (s.Count <= s.MinThreshold)
+                                        {
+                                            <span class="badge bg-danger">Near To Finish</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Available</span>
+                                        }
+                                    </td>
+                                    <td>@s.LastTransferDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td><button type="submit" class="btn btn-sm btn-primary">Save</button></td>
+                                    </form>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+}

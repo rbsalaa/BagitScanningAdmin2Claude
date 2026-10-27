@@ -1,0 +1,27 @@
+﻿@* Shows the TempData success/error message as a toast.
+   jQuery and toastr are loaded once by _Layout; this partial no longer loads its own copies.
+   Messages are JSON-encoded so quotes or HTML in a message cannot break the script. *@
+@{
+    var successMessage = TempData["success"]?.ToString();
+    var errorMessage = TempData["error"]?.ToString();
+}
+@if (!string.IsNullOrEmpty(successMessage) || !string.IsNullOrEmpty(errorMessage))
+{
+    <script>
+        (function () {
+            var show = function () {
+                if (!window.toastr) return;
+                toastr.options = { closeButton: true, progressBar: true, positionClass: "toast-top-right", timeOut: 4000 };
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                    @:toastr.success(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(successMessage)));
+                }
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    @:toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(errorMessage)));
+                }
+            };
+            if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", show); else show();
+        })();
+    </script>
+}

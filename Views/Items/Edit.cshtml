@@ -1,0 +1,174 @@
+﻿@model ItemDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Editpost" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ItemID" />
+            <div class="form-group">
+                <label asp-for="CompID" class="control-label"></label>
+                <select id="PreferenceType" asp-for="CompID" class="form-control" asp-items="Model.CompList"></select>
+                <span asp-validation-for="CompID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control PreferenceType2" asp-items="Model.BrandList"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BranchID" class="control-label"></label>
+                <select asp-for="BranchID" class="form-control PreferenceType3" asp-items="Model.BranchList"></select>
+                <span asp-validation-for="BranchID" class="text-danger"></span>
+            </div>
+            <div class="form-group pb-3">
+                <label asp-for="AlohaProductID" class="control-label"></label>
+                <input asp-for="AlohaProductID" class="form-control" />
+                <span asp-validation-for="AlohaProductID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="form-group pb-3">
+                    <label asp-for="ItemName" class="control-label"></label>
+                    <input asp-for="ItemName" class="form-control" />
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+                <div class="form-group pb-3">
+                    <label asp-for="ItemName_AR" class="control-label"></label>
+                    <input asp-for="ItemName_AR" class="form-control" />
+                    <span asp-validation-for="ItemName_AR" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Calories" class="control-label"></label>
+                    <input asp-for="Calories" class="form-control" />
+                    <span asp-validation-for="Calories" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Steps" class="control-label"></label>
+                    <input asp-for="Steps" class="form-control" />
+                    <span asp-validation-for="Steps" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Alergies" class="control-label"></label>
+                    <input asp-for="Alergies" class="form-control" placeholder="make comma between every type (,) ex:(onnion,milk)" />
+                    <span asp-validation-for="ItemPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AlergiesAr" class="control-label"></label>
+                    <input asp-for="AlergiesAr" class="form-control" placeholder="make comma between every type (,) ex:(onnion,milk)" />
+                    <span asp-validation-for="AlergiesAr" class="text-danger"></span>
+                </div>
+
+                <div class="form-group pb-3">
+                    <label asp-for="ItemDescription" class="control-label"></label>
+                    <textarea asp-for="ItemDescription" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="ItemDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group pb-3">
+                    <label asp-for="ItemDescription_AR" class="control-label"></label>
+                    <textarea asp-for="ItemDescription_AR" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="ItemDescription_AR" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ItemPrice" class="control-label"></label>
+                    <input asp-for="ItemPrice" class="form-control" />
+                    <span asp-validation-for="ItemPrice" class="text-danger"></span>
+                </div>
+
+                <div class="form-group pb-3">
+                    <label asp-for="IsGroupItem" class="control-label"></label>
+                    <input type="checkbox" id="showSelect" class="form-checkbox" />
+                    <span asp-validation-for="IsGroupItem" class="text-danger"></span>
+                </div>
+                <div class="form-group pb-3">
+                    <label asp-for="IsEnabled" class="control-label"></label>
+                    <input asp-for="IsEnabled" class="form-checkbox" />
+                    <span asp-validation-for="IsEnabled" class="text-danger"></span>
+                </div>
+
+                <div class="form-group pb-3" id="selectGroup" style="display: none;">
+                    <label asp-for="GroupID" class="control-label"></label>
+                    <select asp-for="GroupID" class="form-control" asp-items="@Model.GrpList">
+                    </select>
+                    <span asp-validation-for="GroupID" class="text-danger"></span>
+                </div>
+
+                <div class="form-group pb-3">
+                    <div class="custom-file">
+                        <input asp-for="@Model.File" type="file" class="custom-file-input fileUpload" accept="image/jpeg" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group  pb-3">
+                <input type="submit" value="Save" class="btn btn-primary" asp-controller="Items" asp-action="EditPost" />
+                | <a class="btn btn-secondary" asp-action="ItemList">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+<script>
+    // JavaScript to toggle the select list based on the checkbox
+    document.getElementById("showSelect").addEventListener("change", function () {
+        var selectGroup = document.getElementById("selectGroup");
+        selectGroup.style.display = this.checked ? "block" : "none";
+    });
+</script><script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#PreferenceType").change(function () {
+            $(".PreferenceType2").empty();
+            $(".PreferenceType3").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/Items/GetPreferenceValues',
+                dataType: 'json',
+                data: { id2: $(this).val() },
+                success: function (data) {
+                    $(".PreferenceType2").append('<option value="">Select Brand</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType2").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+
+        $(".PreferenceType2").change(function () {
+            $(".PreferenceType3").empty();
+            $.ajax({
+                type: 'POST',
+                url: '/Items/GetPreferenceValues3',
+                dataType: 'json',
+                data: {
+                    id2: $(".PreferenceType2").val(),
+                    id3: $("#PreferenceType").val()
+                },
+                success: function (data) {
+                    $(".PreferenceType3").append('<option value="">Select Branch</option>');
+                    $.each(data, function (i, item) {
+                        $(".PreferenceType3").append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    });
+                }
+            });
+        });
+    });
+</script>
+</script>

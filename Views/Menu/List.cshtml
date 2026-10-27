@@ -1,0 +1,97 @@
+﻿@model IEnumerable<MenuDTO>
+@{
+    ViewData["Title"] = "Menu List";
+}
+
+<div class="container p-3">
+ 
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Menu List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="menu" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add Menu</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+              
+                <th>
+                    Menu ID
+                </th>
+                <th>
+                    Menu Name
+                </th>
+                <th>
+                    IsDefault
+             
+                <th>
+                    Is Active
+                </th>
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+                        @item.MenuID
+
+                    </td>
+                    <td >
+                        @item.MenuName
+
+                    </td>
+                    <td >
+                        @item.IsDefault
+
+                    </td>
+                    <td>
+                        @item.IsActive
+
+                    </td>
+
+                    
+                    <td class="text-center">
+                        <div class="btn-group w-75" role="Items">
+                            <a class="btn btn-primary mx-2" asp-controller="menu" asp-action="MenuItemsShow" asp-route-id="@item.MenuID"><i class="bi bi-card-list"></i> &nbsp; Menu Items</a>
+
+                            <a class="btn btn-primary mx-2" asp-controller="menu" asp-action="Detail" asp-route-id="@item.MenuID"><i class="bi bi-card-list"></i> &nbsp; Menu Details</a>
+
+                            <a class="btn btn-secondary  mx-2 " asp-controller="menu" asp-action="Edit" asp-route-id="@item.MenuID"><i class="bi bi-pencil-fill"></i> &nbsp; Edit</a>
+
+                            <a class="btn btn-warning  mx-2 " asp-controller="menu" asp-action="Delete" asp-route-id="@item.MenuID"><i class="bi bi-trash-fill"></i> &nbsp; Delete</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<StoreMenuDiscountsDTO>
+@{
+    ViewData["Title"] = "Discountss List";
+}
+
+<div class="container p-3">
+    <partial name="_Notifications" />
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3 class="text-primary">Discountss List</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="ShopDiscounts" asp-action="create"><i class="bi bi-plus-circle"></i> &nbsp; Add Discounts</a>
+
+        </div>
+
+    </div>
+
+    </br>
+    <table id="UserTable" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+              
+                <th>
+                   Shop Discounts ID
+                </th>
+              
+                <th>
+                    Discounts Code
+                </th>
+               
+                <th>
+                    Discounts Title
+                </th>
+                <th>
+                    Discounts Percintage
+                </th>
+                <th>
+                  Is Active
+                </th>
+
+                <th class="text-center">
+                    Operations
+                </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+                        @item.DiscountMenuID
+
+                    </td>
+                    <td >
+                        @item.DiscountCode
+
+                    </td>
+                    <td>
+                        @item.DiscountTitle
+
+                    </td>
+                    <td>
+                        @item.DiscountPercintage
+
+                    </td>
+
+                    <td >
+                        @item.IsActive
+
+                    </td>
+                   
+                    <td class="text-center">
+                        <div class="btn-group w-75" role="Discounts">
+                            <a class="btn btn-primary mx-2" asp-controller="ShopDiscounts" asp-action="Detail" asp-route-id="@item.DiscountMenuID"><i class="bi bi-card-list"></i> Details</a>
+
+                            <a class="btn btn-secondary  mx-2 " asp-controller="ShopDiscounts" asp-action="Edit" asp-route-id="@item.DiscountMenuID"><i class="bi bi-pencil-fill"></i>  Edit</a>
+
+                            <a class="btn btn-warning  mx-2 " asp-controller="ShopDiscounts" asp-action="Delete" asp-route-id="@item.DiscountMenuID"><i class="bi bi-trash-fill"></i> Delete</a>
+
+
+
+
+                        </div>
+
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts {
+
+
+
+
+
+}
